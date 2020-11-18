@@ -6,7 +6,7 @@
 #    By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2013/11/20 18:41:05 by gbourgeo          #+#    #+#              #
-#    Updated: 2019/07/17 13:20:10 by gbourgeo         ###   ########.fr        #
+#    Updated: 2020/11/18 20:05:42 by gbourgeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ SRC = ft_strlen.c ft_strdup.c ft_strcpy.c ft_strncpy.c ft_strcat.c \
 	get_next_line.c \
 	ft_split.c ft_split_whitespaces.c ft_str2join.c ft_strcdup.c \
 	ft_strcharset.c ft_stricpy.c ft_strndup.c ft_strrcdup.c ft_freestr.c \
-	ft_freetab.c ft_iswhitespace.c ft_split_whitespaces.c ft_pow.c
+	ft_freetab.c ft_iswhitespace.c ft_split_whitespaces.c ft_pow.c ft_atol.c \
+	ft_atol_base.c
 
 PRINTF_DIR = ft_printf/
 PRINTF_SRC = ft_printf.c ft_printf_write.c
@@ -53,7 +54,8 @@ OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(SPRINTF_SRC:.c=.o))
 OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(SNPRINTF_SRC:.c=.o))
 OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(VPRINTF_SRC:.c=.o))
 
-WWW	= gcc -Wall -Werror -Wextra
+CC	= gcc
+CFLAGS = -Wall -Werror -Wextra
 
 INCLUDES = -I includes/
 
@@ -70,11 +72,11 @@ $(NAME): $(OBJ_SRC) $(OBJ_PRINTF)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@echo -n .
-	@$(WWW) -o $@ -c $< $(INCLUDES)
+	@$(CC) $(ARCH) $(CFLAGS) -o $@ -c $< $(INCLUDES)
 
 $(OBJ_DIR)%.o: $(PRINTF_DIR)%.c
 	@echo -n .
-	@$(WWW) -o $@ -c $< $(INCLUDES)
+	@$(CC) $(ARCH) $(CFLAGS) -o $@ -c $< $(INCLUDES)
 
 clean:
 	@if test -d $(OBJ_DIR) ; then rm -rf $(OBJ_DIR) ; echo Libft .o erased. ; fi
