@@ -43,6 +43,7 @@ DPRINTF_SRC = ft_dprintf.c ft_dprintf_write.c
 SPRINTF_SRC = ft_sprintf.c ft_sprintf_write.c
 SNPRINTF_SRC = ft_snprintf.c ft_snprintf_write.c
 VPRINTF_SRC = ft_vprintf.c ft_vprintf_write.c
+VDPRINTF_SRC = ft_vdprintf.c ft_vdprintf_write.c
 
 OBJ_DIR = obj/
 OBJ_SRC	= $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
@@ -53,11 +54,14 @@ OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(DPRINTF_SRC:.c=.o))
 OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(SPRINTF_SRC:.c=.o))
 OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(SNPRINTF_SRC:.c=.o))
 OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(VPRINTF_SRC:.c=.o))
+OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(VDPRINTF_SRC:.c=.o))
 
 CC	= gcc
 CFLAGS = -Wall -Werror -Wextra
 
 INCLUDES = -I includes/
+
+.PHONY: premade clean fclean re
 
 all: premade $(NAME)
 
@@ -85,5 +89,3 @@ fclean: clean
 	@if test -f $(NAME) ; then rm -f $(NAME) ; echo libft $(NAME) erased. ; fi
 
 re: fclean all
-
-.PHONY: clean fclean re

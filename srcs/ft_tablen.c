@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int			ft_tablen(char **table)
+int			ft_tablen(const char **table)
 {
 	int		i;
 

@@ -15,5 +15,5 @@
 
 void			ft_vprintf_write(t_dt *data)
 {
-	data->ret += write(data->fd, data->buff, data->pos);
+	data->ret += write(STDOUT_FILENO, data->buff, data->pos);
 }

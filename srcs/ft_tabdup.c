@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-char		**ft_tabdup(char **table)
+char		**ft_tabdup(char * const *table)
 {
 	char	**cpy;
 	int		i;

@@ -34,7 +34,7 @@ typedef struct		s_av
 	int					len;
 }					t_av;
 
-typedef struct		s_args
+typedef struct		s_flag
 {
 	char			hash;
 	char			minus;
@@ -45,7 +45,7 @@ typedef struct		s_args
 	char			*point;
 	int				precision;
 	int				len_modifier;
-}					t_args;
+}					t_flag;
 
 typedef struct		s_dt
 {
@@ -61,7 +61,7 @@ typedef struct		s_dt
 	char			buff[PRINTF_BUFF_SIZE];
 	char			*tail;
 	int				len;
-	t_args			flag;
+	t_flag			flag;
 }					t_dt;
 
 int					pf_routine(t_dt *data);

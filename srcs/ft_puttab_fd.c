@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-void			ft_puttab_fd(char **table, int fd)
+void			ft_puttab_fd(char * const *table, int fd)
 {
 	int			i;
 
