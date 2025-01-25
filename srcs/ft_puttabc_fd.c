@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncat.c                                       :+:      :+:    :+:   */
+/*   ft_puttabc_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gbourgeo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2013/11/21 13:42:55 by gbourgeo          #+#    #+#             */
-/*   Updated: 2013/12/03 23:05:32 by gbourgeo         ###   ########.fr       */
+/*   Created: 2015/04/04 19:44:38 by gbourgeo          #+#    #+#             */
+/*   Updated: 2017/09/21 00:58:09 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_strncat(char *s1, const char *s2, size_t n)
+void		ft_puttabc_fd(char * const *table, char * const preprint, int fd)
 {
-	size_t	i;
-	size_t	j;
+	int		i;
 
-	j = 0;
-	i = ft_strlen(s1);
-	while (s2[j] && i + 1 < n)
-		s1[i++] = s2[j++];
-	s1[i] = '\0';
-	return (s1);
+	i = 0;
+	while (table && table[i])
+	{
+		ft_putstr_fd(preprint, fd);
+		ft_putendl_fd(table[i], fd);
+		i++;
+	}
 }

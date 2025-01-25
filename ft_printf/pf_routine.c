@@ -67,12 +67,17 @@ static void		get_options(t_dt *data)
 			data->flag.space = 1;
 		else if (*data->tail == '0')
 			data->flag.zero = 1;
+		else if (*data->tail == '*')
+			data->flag.min_width = va_arg(data->ap, int);
 		else if (ft_isdigit(*data->tail))
 			data->flag.min_width = pf_atoi(data);
 		else if (*data->tail == '.')
 		{
 			data->flag.point = data->tail++;
-			data->flag.precision = pf_atoi(data);
+			if (*data->tail == '*')
+				data->flag.precision = va_arg(data->ap, int);
+			else
+				data->flag.precision = pf_atoi(data);
 		}
 		else if (get_more_options(data))
 			break ;

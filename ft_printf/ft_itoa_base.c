@@ -15,12 +15,12 @@
 
 char			*ft_itoa_base(unsigned long long nb, unsigned long long base)
 {
-	char				*b;
+	char				*base_str;
 	unsigned long long	size;
 	unsigned long long	i;
 	char				*ret;
 
-	b = "0123456789abcdef";
+	base_str = "0123456789abcdef";
 	size = (nb == 0) ? 1 : 0;
 	i = nb;
 	while (i)
@@ -32,7 +32,7 @@ char			*ft_itoa_base(unsigned long long nb, unsigned long long base)
 		return (NULL);
 	while (size-- > 0)
 	{
-		ret[size] = b[nb % base];
+		ret[size] = base_str[nb % base];
 		nb /= base;
 	}
 	return (ret);

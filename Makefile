@@ -1,13 +1,13 @@
 # **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2013/11/20 18:41:05 by gbourgeo          #+#    #+#              #
-#    Updated: 2020/11/18 20:05:42 by gbourgeo         ###   ########.fr        #
-#                                                                              #
+#																			  #
+#														 :::	  ::::::::	#
+#	Makefile										   :+:	  :+:	:+:	#
+#													 +:+ +:+		 +:+	  #
+#	By: gbourgeo <gbourgeo@student.42.fr>		  +#+  +:+	   +#+		 #
+#												 +#+#+#+#+#+   +#+			#
+#	Created: 2013/11/20 18:41:05 by gbourgeo		  #+#	#+#			  #
+#	Updated: 2020/11/18 20:05:42 by gbourgeo		 ###   ########.fr		#
+#																			  #
 # **************************************************************************** #
 
 NAME = libft.a
@@ -26,7 +26,8 @@ SRC = ft_strlen.c ft_strdup.c ft_strcpy.c ft_strncpy.c ft_strcat.c \
 	ft_putendl_fd.c ft_putnbr_fd.c \
 	ft_lstadd.c ft_lstdel.c ft_lstdelone.c ft_lstiter.c ft_lstmap.c ft_lstnew.c\
 	ft_lstaddend.c ft_lstswap.c \
-	ft_tabdup.c ft_tablen.c ft_puttab.c ft_puttab_fd.c ft_tabdel.c \
+	ft_tabdup.c ft_tablen.c ft_puttab.c ft_puttab_fd.c ft_puttabc.c \
+	ft_puttabc_fd.c ft_tabdel.c \
 	get_next_line.c \
 	ft_split.c ft_split_whitespaces.c ft_str2join.c ft_strcdup.c \
 	ft_strcharset.c ft_stricpy.c ft_strndup.c ft_strrcdup.c ft_freestr.c \
@@ -36,7 +37,7 @@ SRC = ft_strlen.c ft_strdup.c ft_strcpy.c ft_strncpy.c ft_strcat.c \
 PRINTF_DIR = ft_printf/
 PRINTF_SRC = ft_printf.c ft_printf_write.c
 PRINTF_BASE = ft_atouc.c ft_itoa_base.c ft_strtoupper.c pf_c.c	pf_x.c	\
-		pf_di.c pf_o.c pf_p.c pf_percent.c pf_s.c pf_u.c pf_wchar.c pf_writes.c	\
+		pf_di.c pf_o.c pf_p.c pf_percent.c pf_s.c pf_u.c pf_wchar.c pf_writes.c \
 		pf_routine.c
 FPRINTF_SRC = ft_fprintf.c ft_fprintf_write.c
 DPRINTF_SRC = ft_dprintf.c ft_dprintf_write.c
@@ -56,7 +57,7 @@ OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(SNPRINTF_SRC:.c=.o))
 OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(VPRINTF_SRC:.c=.o))
 OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(VDPRINTF_SRC:.c=.o))
 
-CC	= gcc
+CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 
 INCLUDES = -I includes/
@@ -66,21 +67,21 @@ INCLUDES = -I includes/
 all: premade $(NAME)
 
 premade:
-	@if !(test -f $(NAME)) ; then echo -n "Generating $(NAME) "; fi
+	@echo '[Compilation de la libft]'
 	@mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJ_SRC) $(OBJ_PRINTF)
 	@ar rc $@ $^
 	@ranlib $@
-	@echo " Done!"
+	@echo " > $(NAME)"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	@echo -n .
-	@$(CC) $(ARCH) $(CFLAGS) -o $@ -c $< $(INCLUDES)
+	@/bin/echo -n "."
+	@$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDES)
 
 $(OBJ_DIR)%.o: $(PRINTF_DIR)%.c
-	@echo -n .
-	@$(CC) $(ARCH) $(CFLAGS) -o $@ -c $< $(INCLUDES)
+	@/bin/echo -n "."
+	@$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDES)
 
 clean:
 	@if test -d $(OBJ_DIR) ; then rm -rf $(OBJ_DIR) ; echo Libft .o erased. ; fi

@@ -91,7 +91,7 @@ static void		pf_big_s(t_dt *data)
 			write_char(data, ' ');
 	}
 }
-
+#include <unistd.h>
 static void		pf_small_s(t_dt *data)
 {
 	t_av		av;

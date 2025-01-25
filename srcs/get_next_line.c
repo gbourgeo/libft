@@ -56,15 +56,15 @@ static int	create_line(int const fd, char **line, t_gnl *tmp, t_gnl **gnl)
 	int				ret;
 
 	ret = 0;
-	if ((*line = ft_strnew(BUFF_SIZE + 1)) == NULL)
+	if ((*line = ft_strnew(GNL_BUFF_SIZE + 1)) == NULL)
 		return (-1);
 	if (tmp->copy && (analyse_line(line, tmp, gnl)) == 1)
 		return (1);
-	while ((ret = read(fd, *line, BUFF_SIZE)) > 0)
+	while ((ret = read(fd, *line, GNL_BUFF_SIZE)) > 0)
 	{
 		if ((analyse_line(line, tmp, gnl)) == 1)
 			return (1);
-		ft_bzero(*line, BUFF_SIZE + 1);
+		ft_bzero(*line, GNL_BUFF_SIZE + 1);
 	}
 	free(*line);
 	*line = ft_strdup(tmp->copy);
@@ -94,7 +94,7 @@ int			get_next_line(int const fd, char **line)
 {
 	static t_gnl		*gnl = NULL;
 
-	if (fd >= 0 && line != NULL && BUFF_SIZE > 0)
+	if (fd >= 0 && line != NULL && GNL_BUFF_SIZE > 0)
 	{
 		if (gnl == NULL)
 		{
