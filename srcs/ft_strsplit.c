@@ -11,66 +11,72 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-static int		tab_col(char const *s, char c)
+static size_t	get_chr_len(const char *str, char chr)
 {
-	int			col;
+	size_t		len = 0;
 
-	col = 0;
-	while (s[col] != c && s[col] != '\0')
-		++col;
-	return (col + 1);
+	while (str[len] == chr && str[len] != '\0')
+	{
+		++len;
+	}
+	return (len);
 }
 
-static int		tab_line(char const *str, char c)
+static size_t	get_line_len(const char *str, char chr)
 {
-	int			i;
-	int			lin;
+	size_t		len = 0;
 
-	i = 0;
-	lin = 0;
-	if (str)
+	while (str[len] != chr && str[len] != '\0')
 	{
-		while (str[i] != '\0')
+		++len;
+	}
+	return (len);
+}
+
+static size_t	get_table_len(const char *str, char chr)
+{
+	size_t	iter = 0;
+	size_t	lines = 0;
+
+	if (str != NULL)
+	{
+		while (str[iter] != '\0')
 		{
-			if (str[i] != c && str[i] != '\0')
-			{
-				while (str[i] != c && str[i] != '\0')
-					++i;
-				++lin;
-			}
-			while (str[i] == c && str[i] != '\0')
-				++i;
+			iter += get_chr_len(str + iter, chr);
+			lines += (str[iter] != '\0');
+			iter += get_line_len(str + iter, chr);
 		}
 	}
-	return (lin + 1);
+	return (lines);
 }
 
-char			**ft_strsplit(char const *s, char c)
+char		**ft_strsplit(const char *str, char chr)
 {
-	int			i;
-	int			j;
-	int			k;
-	char		**tab;
+	char	**table = NULL;
+	size_t	table_len = 0;
+	size_t	table_i = 0;
+	size_t	str_len = 0;
+	size_t	str_i = 0;
 
-	i = 0;
-	j = 0;
-	k = 0;
-	if (s == NULL)
-		return (NULL);
-	if ((tab = (char**)malloc(sizeof(*tab) * tab_line(s, c))) == NULL)
-		return (NULL);
-	while (tab_line(&s[i], c) > 1)
+	table_len = get_table_len(str, chr);
+	table = (char **)malloc(sizeof(*table) * (table_len + 1));
+	if (table != NULL)
 	{
-		while (s[i] == c && s[i] != '\0')
-			++i;
-		if ((tab[j] = (char*)malloc(sizeof(char) * tab_col(&s[i], c))) == NULL)
-			return (NULL);
-		while (s[i] != c && s[i] != '\0')
-			tab[j][k++] = s[i++];
-		tab[j++][k] = '\0';
-		k = 0;
+		while (table_i < table_len)
+		{
+			str_i += get_chr_len(str + str_i, chr);
+			str_len = get_line_len(str + str_i, chr);
+			table[table_i] = ft_strsub(str, str_i, str_len);
+			if (table[table_i] == NULL)
+			{
+				break;
+			}
+			str_i += str_len;
+			++table_i;
+		}
+		table[table_i] = NULL;
 	}
-	tab[j] = NULL;
-	return (tab);
+	return (table);
 }

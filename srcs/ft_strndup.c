@@ -11,19 +11,17 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-char		*ft_strndup(const char *s1, int size)
+char		*ft_strndup(const char *src, size_t size)
 {
-	char	*dup;
+	char	*dest = NULL;
 
-	dup = NULL;
-	if (s1 == NULL || size == 0)
-		return (NULL);
-	if ((dup = (char*)malloc(sizeof(*dup) * (size + 1))) != NULL)
+	dest = (char *)malloc(sizeof(*dest) * (size + 1));
+	if (dest != NULL)
 	{
-		dup[size] = '\0';
-		while (--size >= 0)
-			dup[size] = s1[size];
+		ft_strncpy(dest, src, size);
+		dest[size] = '\0';
 	}
-	return (dup);
+	return (dest);
 }

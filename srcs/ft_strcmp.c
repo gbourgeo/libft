@@ -10,16 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_strcmp(const char *s1, const char *s2)
-{
-	int	i;
+#include <stddef.h>
 
-	i = 0;
-	if (s1 != 0 && s2 != 0)
+int		ft_strcmp(const char *str1, const char *str2)
+{
+	size_t	iter = 0;
+
+	if (str1 != NULL && str2 != NULL)
 	{
-		while ((unsigned char)s1[i] == (unsigned char)s2[i] && (s1[i] || s2[i]))
-			++i;
-		return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		while (str1[iter] != '\0'
+			&& str2[iter] != '\0'
+			&& (unsigned char)str1[iter] == (unsigned char)str2[iter])
+		{
+			++iter;
+		}
+		return ((unsigned char)str1[iter] - (unsigned char)str2[iter]);
 	}
 	return (-1);
 }

@@ -11,10 +11,13 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
 
-void		ft_lstiter(t_list *lst, void (*f)(t_list *elem))
+void		ft_lstiter(t_list *lst, void (*func)(t_list *))
 {
-	f(lst);
+	func(lst);
 	if (lst->next != NULL)
-		ft_lstiter(lst->next, f);
+	{
+		ft_lstiter(lst->next, func);
+	}
 }

@@ -11,24 +11,32 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
 
-char	*ft_strstr(const char *s1, const char *s2)
+char	*ft_strstr(const char *str, const char *tofind)
 {
-	int	j;
+	size_t	iter_i = 0;
+	size_t	iter_j = 0;
 
-	j = 0;
-	if (s1 == NULL || s2 == NULL)
-		return (char*)(s1);
-	while (*s1)
+	if (str != NULL && tofind != NULL)
 	{
-		while (s2[j] == s1[j] && s2[j] && s1[j])
-			j++;
-		if (!s2[j])
-			return (char*)(s1);
-		j = 0;
-		s1++;
+		while (str[iter_i] != '\0')
+		{
+			iter_j = 0;
+			while (tofind[iter_j] != '\0'
+				&& str[iter_i + iter_j] != '\0'
+				&& tofind[iter_j] == str[iter_i + iter_j])
+			{
+				iter_j++;
+			}
+			if (tofind[iter_j] == '\0')
+				return (char *)(str + iter_i);
+			iter_i++;
+		}
+		if (tofind[iter_j] == '\0')
+		{
+			return (char *)(str + iter_i);
+		}
 	}
-	if (!s2[j])
-		return (char*)(s1);
 	return (NULL);
 }

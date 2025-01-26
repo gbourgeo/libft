@@ -11,29 +11,30 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-char		*ft_itoa(int n)
+char		*ft_itoa(int num)
 {
-	char	*p;
-	int		sign;
-	int		i;
-	int		src;
+	char	*ptr = NULL;
+	int		sign = 0;
+	int		iter = 0;
+	int		src = 0;
 
-	src = n;
-	i = (n < 0 ? 3 : 2);
-	while ((n /= 10))
-		++i;
-	if ((p = (char*)malloc(sizeof(*p) * i)) == NULL)
+	src = num;
+	iter = (num < 0 ? 3 : 2);
+	while ((num /= 10))
+		++iter;
+	if ((ptr = (char*)malloc(sizeof(*ptr) * iter)) == NULL)
 		return (NULL);
-	p[--i] = '\0';
+	ptr[--iter] = '\0';
 	if (src == 0)
-		p[0] = '0';
+		ptr[0] = '0';
 	if ((sign = (src < 0 ? -1 : 1)) < 0)
-		p[0] = '-';
+		ptr[0] = '-';
 	while (src != 0)
 	{
-		p[--i] = ((src % 10) * sign + 48);
+		ptr[--iter] = ((src % 10) * sign + 48);
 		src /= 10;
 	}
-	return (p);
+	return (ptr);
 }

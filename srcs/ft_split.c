@@ -11,72 +11,74 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-static int	tab_lines(char *s, char *set)
+static size_t	get_chr_len(const char *str, const char *charset)
 {
-	int		i;
-	int		lines;
+	size_t		len = 0;
 
-	i = 0;
-	lines = 0;
-	while (s[i] != '\0')
+	while (str[len] != '\0'
+		&& ft_strchr(charset, str[len]) != NULL)
 	{
-		if (ft_strchr(set, s[i]) == NULL)
+		++len;
+	}
+	return (len);
+}
+
+static size_t	get_line_len(const char *str, const char *charset)
+{
+	size_t		len = 0;
+
+	while (str[len] != '\0'
+		&& ft_strchr(charset, str[len]) == NULL)
+	{
+		++len;
+	}
+	return (len);
+}
+
+static size_t	get_table_len(const char *str, const char *charset)
+{
+	size_t	iter = 0;
+	size_t	lines = 0;
+
+	if (str != NULL)
+	{
+		while (str[iter] != '\0')
 		{
-			lines += 1;
-			while (ft_strchr(set, s[i]) == NULL && s[i] != '\0')
-				++i;
+			iter += get_chr_len(str + iter, charset);
+			lines += (str[iter] != '\0');
+			iter += get_line_len(str + iter, charset);
 		}
-		else
-			++i;
 	}
 	return (lines);
 }
 
-static char	*fill_tab(char *s, char *set)
+char		**ft_split(const char *str, const char *charset)
 {
-	int		i;
-	char	*copy;
+	char	**table = NULL;
+	size_t	table_len = 0;
+	size_t	table_i = 0;
+	size_t	str_len = 0;
+	size_t	str_i = 0;
 
-	i = 0;
-	copy = NULL;
-	if (s == NULL)
-		return (NULL);
-	while (ft_strchr(set, s[i]) == NULL && s[i] != '\0')
-		i += 1;
-	if ((copy = (char*)malloc(sizeof(copy) * (i + 1))) == NULL)
-		return (NULL);
-	copy[i] = '\0';
-	while (--i >= 0)
-		copy[i] = s[i];
-	return (copy);
-}
-
-char		**ft_split(char *str, char *charset)
-{
-	int		i;
-	int		j;
-	char	**tab;
-
-	i = 0;
-	j = 0;
-	if (str == NULL)
-		return (NULL);
-	i = tab_lines(str, charset);
-	if ((tab = (char**)malloc(sizeof(*tab) * (i + 1))) == NULL)
-		return (NULL);
-	i = 0;
-	while (str[i] != '\0')
+	table_len = get_table_len(str, charset);
+	table = (char **)malloc(sizeof(*table) * (table_len + 1));
+	if (table != NULL)
 	{
-		if (ft_strchr(charset, str[i]) == NULL)
+		while (table_i < table_len)
 		{
-			tab[j++] = fill_tab(str + i, charset);
-			while (ft_strchr(charset, str[i]) == NULL && str[i] != '\0')
-				++i;
+			str_i += get_chr_len(str + str_i, charset);
+			str_len = get_line_len(str + str_i, charset);
+			table[table_i] = ft_strsub(str, str_i, str_len);
+			if (table[table_i] == NULL)
+			{
+				break;
+			}
+			str_i += str_len;
+			++table_i;
 		}
-		else
-			++i;
+		table[table_i] = NULL;
 	}
-	tab[j] = 0;
-	return (tab);
+	return (table);
 }

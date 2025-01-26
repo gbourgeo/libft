@@ -11,28 +11,30 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
 
-void		ft_stricpy(char *s1, const char *s2, int pos)
+void		ft_stricpy(char *dest, const char *src, size_t pos)
 {
-	int		i;
-	int		j;
+	size_t	iter = 0;
+	size_t	jter = 0;
 
-	i = 0;
-	j = ft_strlen(s2);
-	if (s1 == NULL || s2 == NULL || pos > (int)ft_strlen(s1))
-		return ;
-	if (s1[pos] != '\0')
+	jter = ft_strlen(src);
+	if (dest == NULL || src == NULL || pos > ft_strlen(dest))
 	{
-		i = ft_strlen(s1 + pos);
-		while (i > 0)
+		return ;
+	}
+	if (dest[pos] != '\0')
+	{
+		iter = ft_strlen(dest + pos);
+		while (iter > 0)
 		{
-			s1[pos + i + j - 1] = s1[pos + i - 1];
-			i--;
+			dest[pos + iter + jter - 1] = dest[pos + iter - 1];
+			--iter;
 		}
 	}
-	while (s2[i] != 0)
+	while (src[iter] != 0)
 	{
-		s1[pos + i] = s2[i];
-		i++;
+		dest[pos + iter] = src[iter];
+		++iter;
 	}
 }

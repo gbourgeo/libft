@@ -11,21 +11,21 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-void			ft_tabdel(char ***table)
+void		ft_tabdel(char ***table)
 {
-	int			i;
+	size_t	iter = 0;
 
-	i = 0;
-	if (table && *table)
+	if (table != NULL && *table != NULL)
 	{
-		while ((*table)[i])
+		while ((*table)[iter])
 		{
-			free((*table)[i]);
-			(*table)[i] = NULL;
-			i++;
+			free((*table)[iter]);
+			(*table)[iter] = NULL;
+			iter++;
 		}
-		free(*table);
+		free((void *)*table);
 		*table = NULL;
 	}
 }

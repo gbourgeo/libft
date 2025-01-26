@@ -10,17 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+#include <stddef.h>
 
-void		*ft_memset(void *b, int c, size_t len)
+void		*ft_memset(void *ptr, int chr, size_t len)
 {
-	char	*d;
+	size_t	iter = 0;
 
-	if (len)
+	if (ptr != NULL)
 	{
-		d = b;
-		while (len--)
-			*d++ = c;
+		while (iter < len)
+		{
+			((unsigned char *)ptr)[iter] = (unsigned char)chr;
+			iter++;
+		}
 	}
-	return (b);
+	return (ptr);
 }

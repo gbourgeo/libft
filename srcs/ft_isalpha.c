@@ -10,11 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isalpha(int c)
+int		ft_isalpha(int chr)
 {
-	if (c >= 'A' && c <= 'Z')
-		return (1);
-	else if (c >= 'a' && c <= 'z')
-		return (1);
-	return (0);
+	return ((chr >= 'A' && chr <= 'Z') || (chr >= 'a' && chr <= 'z'));
 }

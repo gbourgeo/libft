@@ -11,18 +11,18 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
 
-void		ft_strclr(char *s)
+void		ft_strclr(char *str)
 {
-	int		i;
+	size_t	iter = 0;
 
-	i = 0;
-	if (s != NULL)
+	if (str != NULL)
 	{
-		while (s[i] != '\0')
+		while (str[iter] != '\0')
 		{
-			s[i] = '\0';
-			++i;
+			str[iter] = '\0';
+			++iter;
 		}
 	}
 }

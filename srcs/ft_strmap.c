@@ -11,21 +11,25 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
 
-char		*ft_strmap(char const *s, char (*f)(char))
+char		*ft_strmap(const char *str, char (*func)(char))
 {
-	char			*p;
-	unsigned int	i;
+	char	*ptr = NULL;
+	size_t	iter = 0;
 
-	i = 0;
-	if (s == NULL)
-		return (NULL);
-	if ((p = ft_strdup(s)) == NULL)
-		return (NULL);
-	while (s[i])
+	if (str != NULL && func != NULL)
 	{
-		p[i] = (*f)(s[i]);
-		++i;
+		ptr = ft_strdup(str);
+		if (ptr != NULL)
+		{
+			while (str[iter] != '\0')
+			{
+				ptr[iter] = func(str[iter]);
+				++iter;
+			}
+			return (ptr);
+		}
 	}
-	return (p);
+	return (NULL);
 }

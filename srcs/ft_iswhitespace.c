@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int				ft_iswhitespace(char c)
+int				ft_iswhitespace(char chr)
 {
-	if (c == ' ' || (c >= 9 && c <= 11))
-		return (1);
-	return (0);
+	return (chr == ' ' || (chr >= 9 && chr <= 11));
 }

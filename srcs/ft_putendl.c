@@ -11,10 +11,10 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <unistd.h>
 
-void		ft_putendl(char const *s)
+void		ft_putendl(char const *str)
 {
-	if (s)
-		ft_putstr(s);
-	ft_putchar('\n');
+	ft_putstr(str);
+	write(STDOUT_FILENO, "\n", 1);
 }

@@ -11,11 +11,9 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
 
-int		ft_strnequ(char const *s1, char const *s2, size_t n)
+int		ft_strnequ(char const *str1, char const *str2, size_t len)
 {
-	if (s1 != NULL && s2 != NULL)
-		if (ft_strncmp(s1, s2, n) == 0)
-			return (1);
-	return (0);
+	return (ft_strncmp(str1, str2, len) == 0);
 }

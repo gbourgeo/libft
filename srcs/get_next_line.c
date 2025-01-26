@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdlib.h>
 
 static void	gnl_free(t_gnl *tmp, t_gnl **gnl)
 {

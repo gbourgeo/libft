@@ -10,23 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include <stddef.h>
 
-char		*ft_strncpy(char *s1, const char *s2, size_t n)
+char		*ft_strncpy(char *dest, const char *src, size_t len)
 {
-	size_t	i;
+	size_t	iter = 0;
 
-	i = 0;
-	while (i < n)
+	if (dest != NULL)
 	{
-		if (s2[i] == '\0')
+		if (src != NULL)
 		{
-			while (i < n)
-				s1[i++] = '\0';
-			return (s1);
+			while (src[iter] != '\0'
+				&& iter < len)
+			{
+				dest[iter] = src[iter];
+				++iter;
+			}
 		}
-		s1[i] = s2[i];
-		++i;
+		while (iter < len)
+		{
+			dest[iter] = '\0';
+			iter++;
+		}
 	}
-	return (s1);
+	return (dest);
 }

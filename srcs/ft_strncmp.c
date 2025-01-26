@@ -12,24 +12,24 @@
 
 #include <string.h>
 
-int			ft_strncmp(const char *s1, const char *s2, size_t n)
+int			ft_strncmp(const char *str1, const char *str2, size_t len)
 {
-	size_t	i;
+	size_t	iter = 0;
 
-	i = 0;
-	if (s1 == NULL || s2 == NULL)
-		return (-1);
-	if (n && s1 != s2)
+	if (str1 != NULL && str2 != NULL && len > 0)
 	{
-		while (i < n && (unsigned char)s1[i] == (unsigned char)s2[i])
+		while (str1[iter] != '\0'
+			&& str2[iter] != '\0'
+			&& iter < len
+			&& (unsigned char)str1[iter] == (unsigned char)str2[iter])
 		{
-			if (s1[i] == '\0' || s2[i] == '\0')
-				return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-			++i;
+			++iter;
 		}
-		if (i == n)
+		if (iter == len || str1[iter] == '\0' || str2[iter] == '\0')
+		{
 			return (0);
-		return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		}
+		return ((unsigned char)str1[iter] - (unsigned char)str2[iter]);
 	}
 	return (0);
 }

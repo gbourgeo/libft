@@ -10,19 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-char		*ft_strcpy(char *s1, const char *s2)
-{
-	int		i;
+#include <stdlib.h>
 
-	i = 0;
-	if (s1 && s2)
+char		*ft_strcpy(char *dest, const char *src)
+{
+	size_t	iter = 0;
+
+	if (dest != NULL && src != NULL)
 	{
-		while (s2[i] != '\0')
+		while (src[iter] != '\0')
 		{
-			s1[i] = s2[i];
-			i++;
+			dest[iter] = src[iter];
+			iter++;
 		}
-		s1[i] = '\0';
+		dest[iter] = '\0';
 	}
-	return (s1);
+	return (dest);
 }

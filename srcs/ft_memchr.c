@@ -12,18 +12,19 @@
 
 #include <string.h>
 
-void			*ft_memchr(const void *s, int c, size_t n)
+void		*ft_memchr(const void *src, int chr, size_t len)
 {
-	size_t		i;
+	size_t	iter = 0;
 
-	i = 0;
-	if (n && s != NULL)
+	if (src != NULL)
 	{
-		while (i < n)
+		while (iter < len)
 		{
-			if ((unsigned char)c == ((unsigned char *)s)[i])
-				return ((void *)(s + i));
-			++i;
+			if ((unsigned char)chr == ((unsigned char *)src)[iter])
+			{
+				return ((void *)(src + iter));
+			}
+			++iter;
 		}
 	}
 	return (NULL);

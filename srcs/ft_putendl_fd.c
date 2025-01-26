@@ -11,10 +11,14 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
+#include <unistd.h>
 
-void		ft_putendl_fd(char const *s, int fd)
+void		ft_putendl_fd(char const *str, int fde)
 {
-	if (s)
-		ft_putstr_fd(s, fd);
-	ft_putchar_fd('\n', fd);
+	size_t	len = 0;
+
+	len = ft_strlen(str);
+	write(fde, str, len);
+	write(fde, "\n", 1);
 }

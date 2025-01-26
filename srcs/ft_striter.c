@@ -10,14 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+#include <stddef.h>
 
-void		ft_striter(char *s, void (*f)(char *))
+void		ft_striter(char *str, void (*func)(char *))
 {
-	size_t	i;
+	size_t	iter = 0;
 
-	i = 0;
-	if (f)
-		while (s[i++])
-			f(&s[i - 1]);
+	if (str != NULL && func != NULL)
+	{
+		while (str[iter] != '\0')
+		{
+			func(str + iter);
+			++iter;
+		}
+	}
 }

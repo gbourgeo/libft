@@ -11,26 +11,25 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-char			*ft_strrcdup(const char *str, char c)
+char		*ft_strrcdup(const char *src, char chr)
 {
-	char		*copy;
-	int			i;
-	int			len;
+	char	*dest = NULL;
+	size_t	iter = 0;
+	size_t	len = 0;
 
-	i = 0;
-	len = ft_strlen(str);
-	if (str == NULL)
-		return (NULL);
-	while (str[len] != c && len >= 0)
-		--len;
-	if ((copy = (char*)malloc(sizeof(char) * len + 1)) == NULL)
-		return (NULL);
-	while (i < len)
+	iter = 0;
+	len = ft_strlen(src);
+	while (len > 0 && src[len - 1] != chr)
 	{
-		copy[i] = str[i];
-		i++;
+		--len;
 	}
-	copy[i] = '\0';
-	return (copy);
+	dest = (char *)malloc(sizeof(*dest) * (len + 1));
+	if (dest != NULL)
+	{
+		ft_strncpy(dest, src, len);
+		dest[iter] = '\0';
+	}
+	return (dest);
 }

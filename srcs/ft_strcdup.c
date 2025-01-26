@@ -11,21 +11,26 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-char			*ft_strcdup(char *str, char c)
+char			*ft_strcdup(const char *str, char chr)
 {
-	char		*copy;
-	int			len;
+	char	*dest = NULL;
+	size_t	len = 0;
 
-	len = 0;
-	if (str == NULL || !*str)
-		return (NULL);
-	while (str[len] != c && str[len] != '\0')
-		len++;
-	if ((copy = (char*)malloc(sizeof(char) * (len + 1))) == NULL)
-		return (NULL);
-	copy[len] = '\0';
-	while (--len >= 0)
-		copy[len] = str[len];
-	return (copy);
+	if (str != NULL)
+	{
+		while (str[len] != '\0'
+			&& str[len] != chr)
+		{
+			len++;
+		}
+		dest = (char *)malloc(sizeof(*dest) * (len + 1));
+		if (dest != NULL)
+		{
+			ft_strncpy(dest, str, len);
+			dest[len] = '\0';
+		}
+	}
+	return (dest);
 }

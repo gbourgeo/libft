@@ -12,23 +12,22 @@
 
 #include "libft.h"
 
-void		ft_putnbr_fd(int n, int fd)
+void		ft_putnbr_fd(int num, int fde)
 {
-	int		ret;
+	int		ret = 0;
 
-	ret = 0;
-	if (n < 0)
+	if (num < 0)
 	{
-		ft_putchar_fd('-', fd);
-		if (n == -2147483648)
+		ft_putchar_fd('-', fde);
+		if (num == -2147483648)
 			ret = 1;
-		n = (n + ret) * (-1);
+		num = (num + ret) * (-1);
 	}
-	if (n > 9)
+	if (num > 9)
 	{
-		ft_putnbr_fd(n / 10, fd);
-		ft_putnbr_fd(n % 10 + ret, fd);
+		ft_putnbr_fd(num / 10, fde);
+		ft_putnbr_fd((num % 10) + ret, fde);
 	}
 	else
-		ft_putchar_fd(n + 48, fd);
+		ft_putchar_fd(num + 48, fde);
 }

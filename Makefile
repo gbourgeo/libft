@@ -46,6 +46,9 @@ SNPRINTF_SRC = ft_snprintf.c ft_snprintf_write.c
 VPRINTF_SRC = ft_vprintf.c ft_vprintf_write.c
 VDPRINTF_SRC = ft_vdprintf.c ft_vdprintf_write.c
 
+UNIT_TESTS_DIR = unit_test/
+UNIT_TEST_SRC = main.c
+
 OBJ_DIR = obj/
 OBJ_SRC	= $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 OBJ_PRINTF = $(addprefix $(OBJ_DIR), $(PRINTF_SRC:.c=.o))
@@ -56,13 +59,15 @@ OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(SPRINTF_SRC:.c=.o))
 OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(SNPRINTF_SRC:.c=.o))
 OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(VPRINTF_SRC:.c=.o))
 OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(VDPRINTF_SRC:.c=.o))
+OBJ_UNIT_TEST = $(addprefix $(OBJ_DIR), $(UNIT_TEST_SRC:.c=.o))
 
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 
-INCLUDES = -I includes/
+INCLUDE_DIR = includes/
+INCLUDES = -I $(INCLUDE_DIR)
 
-.PHONY: premade clean fclean re
+.PHONY: premade clean fclean re test
 
 all: premade $(NAME)
 
@@ -88,5 +93,12 @@ clean:
 
 fclean: clean
 	@if test -f $(NAME) ; then rm -f $(NAME) ; echo libft $(NAME) erased. ; fi
+	@rm -f ./test
 
 re: fclean all
+
+$(OBJ_DIR)%.o: $(UNIT_TESTS_DIR)%.c
+	$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDES)
+
+test: all $(OBJ_UNIT_TEST)
+	$(CC) -o $@ $(OBJ_UNIT_TEST) -L. -lft

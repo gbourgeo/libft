@@ -12,17 +12,20 @@
 
 #include <stddef.h>
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr(const char *str, int chr)
 {
-	int	i;
+	size_t	iter = 0;
 
-	i = 0;
-	if (s)
+	if (str != NULL)
 	{
-		while (s[i] && s[i] != c)
-			++i;
-		if (s[i] == c)
-			return (char*)(s + i);
+		while (str[iter] != '\0')
+		{
+			if (str[iter] == chr)
+			{
+				return (char *)(str + iter);
+			}
+			iter++;
+		}
 	}
 	return (NULL);
 }

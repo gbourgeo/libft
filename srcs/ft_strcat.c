@@ -11,22 +11,22 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
 
 char		*ft_strcat(char *dest, const char *src)
 {
-	size_t	i;
-	size_t	j;
+	size_t	iter_d = 0;
+	size_t	iter_s = 0;
 
-	i = ft_strlen(dest);
-	j = 0;
-	if (src)
+	if (dest != NULL && src != NULL)
 	{
-		while (src[j])
+		iter_d = ft_strlen(dest);
+		while (src[iter_s] != '\0')
 		{
-			dest[i + j] = src[j];
-			j++;
+			dest[iter_d + iter_s] = src[iter_s];
+			iter_s++;
 		}
+		dest[iter_d + iter_s] = '\0';
 	}
-	dest[i + j] = '\0';
 	return (dest);
 }

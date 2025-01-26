@@ -11,16 +11,21 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
 
-char		*ft_strncat(char *s1, const char *s2, size_t n)
+char		*ft_strncat(char *dest, const char *src, size_t len)
 {
-	size_t	i;
-	size_t	j;
+	size_t	iter_d = 0;
+	size_t	iter_s = 0;
 
-	j = 0;
-	i = ft_strlen(s1);
-	while (s2[j] && i + 1 < n)
-		s1[i++] = s2[j++];
-	s1[i] = '\0';
-	return (s1);
+	if (dest != NULL && src != NULL)
+	{
+		iter_d = ft_strlen(dest);
+		while (src[iter_s] != '\0' && iter_d + 1 < len)
+		{
+			dest[iter_d++] = src[iter_s++];
+		}
+		dest[iter_d] = '\0';
+	}
+	return (dest);
 }

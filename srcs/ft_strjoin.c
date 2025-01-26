@@ -11,20 +11,19 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
 
-char		*ft_strjoin(char const *s1, char const *s2)
+char		*ft_strjoin(char const *str1, char const *str2)
 {
-	int		len;
-	char	*p;
+	size_t	len = 0;
+	char	*ptr = NULL;
 
-	len = ft_strlen(s1) + ft_strlen(s2) + 1;
-	p = ft_strnew(len);
-	if (p)
+	len = ft_strlen(str1) + ft_strlen(str2) + 1;
+	ptr = ft_strnew(len);
+	if (ptr != NULL)
 	{
-		if (s1)
-			p = ft_strcpy(p, s1);
-		if (s2)
-			p = ft_strcat(p, s2);
+		ptr = ft_strcpy(ptr, str1);
+		ptr = ft_strcat(ptr, str2);
 	}
-	return (p);
+	return (ptr);
 }

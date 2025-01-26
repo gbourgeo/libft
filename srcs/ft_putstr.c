@@ -11,12 +11,13 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
+#include <unistd.h>
 
 void	ft_putstr(char const *str)
 {
-	if (str)
-	{
-		while (*str != '\0')
-			ft_putchar(*str++);
-	}
+	size_t	len = 0;
+
+	len = ft_strlen(str);
+	write(STDOUT_FILENO, str, len);
 }

@@ -11,14 +11,19 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
 
-void			*ft_memmove(void *s1, const void *s2, size_t n)
+void			*ft_memmove(void *dest, const void *src, size_t len)
 {
-	char		*tone;
-	const char	*ttwo;
+	size_t	iter = 0;
 
-	tone = s1;
-	ttwo = s2;
-	tone = ft_strncpy(tone, ttwo, n);
-	return (s1);
+	if (dest != NULL && src != NULL)
+	{
+		while (iter < len)
+		{
+			((unsigned char *)dest)[iter] = ((const unsigned char *)src)[iter];
+			++iter;
+		}
+	}
+	return (dest);
 }

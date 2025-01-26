@@ -11,17 +11,23 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
 
-char		*ft_strrchr(const char *s, int c)
+char		*ft_strrchr(const char *str, int chr)
 {
-	int	i;
+	size_t	iter = 0;
 
-	if (s == NULL)
-		return (NULL);
-	i = ft_strlen(s);
-	while (i >= 0 && s[i] != c)
-		--i;
-	if (i < 0)
-		return (NULL);
-	return (char*)(s + i);
+	if (str != NULL)
+	{
+		iter = ft_strlen(str);
+		while (iter > 0 && str[iter] != chr)
+		{
+			--iter;
+		}
+		if (str[iter] == chr)
+		{
+			return (char *)(str + iter);
+		}
+	}
+	return (NULL);
 }

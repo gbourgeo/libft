@@ -11,26 +11,27 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
 
-char		*ft_strcharset(char *s1, char *s2)
+char		*ft_strcharset(const char *str, const char *charset)
 {
-	int		i;
-	int		j;
+	size_t	iter = 0;
+	size_t	jter = 0;
 
-	i = 0;
-	j = 0;
-	if (s1 && s2)
+	if (str != NULL && charset != NULL)
 	{
-		while (s1[i] != '\0')
+		while (str[iter] != '\0')
 		{
-			while (s2[j] != '\0')
+			jter = 0;
+			while (charset[jter] != '\0')
 			{
-				if (s1[i] == s2[j])
-					return (s1 + i);
-				j++;
+				if (str[iter] == charset[jter])
+				{
+					return (char *)(str + iter);
+				}
+				++jter;
 			}
-			j = 0;
-			++i;
+			++iter;
 		}
 	}
 	return (NULL);

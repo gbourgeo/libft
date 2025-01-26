@@ -11,16 +11,19 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
 
-void		ft_puttabc_fd(char * const *table, char * const preprint, int fd)
+void		ft_puttabc_fd(const char **table, const char *preprint, int fde)
 {
-	int		i;
+	size_t	iter = 0;
 
-	i = 0;
-	while (table && table[i])
+	if (table != NULL)
 	{
-		ft_putstr_fd(preprint, fd);
-		ft_putendl_fd(table[i], fd);
-		i++;
+		while (table[iter] != NULL)
+		{
+			ft_putstr_fd(preprint, fde);
+			ft_putendl_fd(table[iter], fde);
+			iter++;
+		}
 	}
 }

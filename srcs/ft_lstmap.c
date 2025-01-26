@@ -11,14 +11,17 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-t_list		*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
+t_list		*ft_lstmap(t_list *lst, t_list *(*func)(t_list *))
 {
-	t_list	*so_fresh;
+	t_list	*so_fresh = NULL;
 
-	so_fresh = (t_list*)malloc(sizeof(*so_fresh));
-	so_fresh = f(lst);
+	so_fresh = (t_list *)malloc(sizeof(*so_fresh));
+	so_fresh = func(lst);
 	if (lst->next != NULL)
-		so_fresh->next = ft_lstmap(lst->next, *f);
+	{
+		so_fresh->next = ft_lstmap(lst->next, func);
+	}
 	return (so_fresh);
 }

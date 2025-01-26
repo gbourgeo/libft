@@ -11,21 +11,27 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-char		**ft_tabdup(char * const *table)
+char		**ft_tabdup(const char **table)
 {
-	char	**cpy;
-	int		i;
+	char	**cpy = NULL;
+	size_t	iter = 0;
 
-	cpy = malloc(sizeof(*table) * (ft_tablen(table) + 1));
+	cpy = (char **)malloc(sizeof(*table) * (ft_tablen(table) + 1));
 	if (cpy == NULL)
-		return (NULL);
-	i = 0;
-	while (table && table[i])
 	{
-		cpy[i] = ft_strdup(table[i]);
-		i++;
+		return (NULL);
 	}
-	cpy[i] = NULL;
+	iter = 0;
+	if (table != NULL)
+	{
+		while (table[iter] != NULL)
+		{
+			cpy[iter] = ft_strdup(table[iter]);
+			iter++;
+		}
+	}
+	cpy[iter] = NULL;
 	return (cpy);
 }

@@ -11,28 +11,20 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-char		*ft_str2join(char const *s1, char const *s2, char const *s3)
+char		*ft_str2join(char const *str1, char const *str2, char const *str3)
 {
-	int		len;
-	char	*p;
+	size_t	len = 0;
+	char	*ptr = NULL;
 
-	p = NULL;
-	len = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3);
-	if ((p = (char*)malloc(sizeof(*p) * (len + 1))) != NULL)
+	len = ft_strlen(str1) + ft_strlen(str2) + ft_strlen(str3) + 1;
+	ptr = (char *)malloc(sizeof(*ptr) * len);
+	if (ptr != NULL)
 	{
-		len = 0;
-		if (s1)
-		{
-			while (s1[len])
-			{
-				p[len] = s1[len];
-				++len;
-			}
-		}
-		p[len] = '\0';
-		p = ft_strcat(p, s2);
-		p = ft_strcat(p, s3);
+		ptr = ft_strcpy(ptr, str1);
+		ptr = ft_strcat(ptr, str2);
+		ptr = ft_strcat(ptr, str3);
 	}
-	return (p);
+	return (ptr);
 }

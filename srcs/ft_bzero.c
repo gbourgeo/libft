@@ -12,16 +12,16 @@
 
 #include <stdlib.h>
 
-void		ft_bzero(void *s, size_t n)
+void		ft_bzero(void *ptr, size_t len)
 {
-	char	*x;
-	size_t	i;
+	size_t	iter = 0;
 
-	i = 0;
-	if (n && s)
+	if (ptr != NULL)
 	{
-		x = s;
-		while (i++ < n)
-			*x++ = 0;
+		while (iter < len)
+		{
+			((unsigned char *)ptr)[iter] = 0;
+			iter++;
+		}
 	}
 }

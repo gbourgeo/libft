@@ -10,17 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+#include <stddef.h>
 
-void		ft_striteri(char *s, void (*f)(unsigned int, char *))
+void		ft_striteri(char *str, void (*func)(unsigned int, char *))
 {
-	size_t	i;
+	size_t	iter = 0;
 
-	i = 0;
-	if (f)
-		while (s[i])
+	if (str != NULL && func != NULL)
+	{
+		while (str[iter] != '\0')
 		{
-			f(i, &s[i]);
-			++i;
+			func(iter, str + iter);
+			++iter;
 		}
+	}
 }

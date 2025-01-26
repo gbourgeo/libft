@@ -11,23 +11,26 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-char			*ft_strsub(char const *s, unsigned int start, size_t len)
+char		*ft_strsub(char const *str, unsigned int start, size_t len)
 {
-	size_t		i;
-	char		*p;
+	size_t	iter = 0;
+	char	*ptr = NULL;
 
-	i = 0;
-	if (s == NULL)
-		return (NULL);
-	p = malloc(sizeof(*p) * (len + 1));
-	if (p == NULL)
-		return (NULL);
-	while (i < len)
+	if (str != NULL)
 	{
-		p[i] = s[start + i];
-		i++;
+		ptr = malloc(sizeof(*ptr) * (len + 1));
+		if (ptr != NULL)
+		{
+			while (iter < len && str[start + iter] != '\0')
+			{
+				ptr[iter] = str[start + iter];
+				iter++;
+			}
+			ptr[iter] = '\0';
+			return (ptr);
+		}
 	}
-	p[i] = '\0';
-	return (p);
+	return (NULL);
 }

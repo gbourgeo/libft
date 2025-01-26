@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_constants.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2013/12/11 21:08:40 by gbourgeo          #+#    #+#             */
-/*   Updated: 2013/12/19 17:35:18 by gbourgeo         ###   ########.fr       */
+/*   Created: 2025/01/26 12:28:18 by gbourgeo          #+#    #+#             */
+/*   Updated: 2025/01/26 13:04:46 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdlib.h>
+#ifndef FT_CONSTANTS_H
+# define FT_CONSTANTS_H
 
-void			ft_lstdelone(t_list **alst, void (*del)(void *, size_t))
-{
-	if (*alst)
-	{
-		del((*alst)->content, (*alst)->content_size);
-		free(*alst);
-		*alst = NULL;
-	}
-}
+# ifndef __align
+#  define __align(size)   __attribute__((aligned(size)))
+# endif
+
+# ifndef __unused
+#  define __unused        __attribute__((__unused__))
+# endif
+
+#endif /* FT_CONSTANTS_H */

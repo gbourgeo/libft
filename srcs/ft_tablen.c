@@ -10,12 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int			ft_tablen(const char **table)
-{
-	int		i;
+#include <stddef.h>
 
-	i = 0;
-	while (table && table[i])
-		i++;
-	return (i);
+size_t		ft_tablen(const char **table)
+{
+	size_t	iter = 0;
+
+	if (table != NULL)
+	{
+		while (table[iter] != NULL)
+		{
+			++iter;
+		}
+	}
+	return (iter);
 }
