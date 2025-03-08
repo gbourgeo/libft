@@ -10,19 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_base_printf.h"
+#include "ft_constants.h"
+#include <stdlib.h>
 
-void			pf_percent(t_dt *data)
+ssize_t pf_percent(t_data _unused *data, t_conv *conversion)
 {
-	if (!data->flag.minus)
-	{
-		while (data->flag.min_width > 1 && data->flag.min_width--)
-			write_char(data, (data->flag.zero) ? '0' : ' ');
-	}
-	write_char(data, '%');
-	if (data->flag.minus)
-	{
-		while (data->flag.min_width > 1 && data->flag.min_width--)
-			write_char(data, ' ');
-	}
+    ssize_t zeros  = 0;
+    ssize_t spaces = 0;
+
+    conversion->result = '%';
+    compute_zeros_and_spaces(conversion, 1, 0, &zeros, &spaces);
+    // New result allocation
+    if (pf_conv_new_result(conversion, 1 + zeros + spaces) != 0)
+    {
+        return (-1);
+    }
+    pre_write_modifiers(conversion, zeros, spaces, "%", 1, NULL);
+    post_write_modifiers(conversion, zeros, spaces, "%", 1, NULL);
+    return (0);
 }

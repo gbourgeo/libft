@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_sprintf_write.c                                 :+:      :+:    :+:   */
+/*   ft_strtoupper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbourgeo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/21 08:33:35 by gbourgeo          #+#    #+#             */
-/*   Updated: 2018/09/21 08:33:38 by gbourgeo         ###   ########.fr       */
+/*   Created: 2017/08/09 18:52:25 by gbourgeo          #+#    #+#             */
+/*   Updated: 2017/08/09 18:54:25 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_sprintf.h"
+#include <stddef.h>
 
-void		ft_sprintf_write(t_dt *data)
+char *ft_strtoupper(char *str)
 {
-	size_t	i;
-	size_t	j;
+    char *ptr = str;
 
-	i = 0;
-	j = 0;
-	while (data->str[i])
-		i++;
-	while (j < data->pos)
-	{
-		data->str[i + j] = data->buff[j];
-		j++;
-	}
-	data->str[i + j] = '\0';
-	data->ret += j;
+    if (ptr != NULL)
+    {
+        while (*ptr != '\0')
+        {
+            if (*ptr >= 'a' && *ptr <= 'z')
+            {
+                *ptr -= 32;
+            }
+            ptr++;
+        }
+    }
+    return (str);
 }

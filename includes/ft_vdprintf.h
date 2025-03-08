@@ -11,11 +11,11 @@
 /* ************************************************************************** */
 
 #ifndef FT_VPRINTF_H
-# define FT_VPRINTF_H
+#define FT_VPRINTF_H
 
-# include "ft_base_printf.h"
+#include "ft_base_printf.h"
 
-int				ft_vdprintf(int fd, const char *format, va_list ap);
-void			ft_vdprintf_write(t_dt *data);
+int  ft_vdprintf(int filed, const char *format, va_list argp);
+void ft_vdprintf_write(t_data *data);
 
 #endif

@@ -15,8 +15,7 @@
 
 # include "ft_base_printf.h"
 
-int			ft_snprintf(char *str, size_t size,
-						const char *restrict format, ...);
-void		ft_snprintf_write(t_dt *data);
+int  ft_snprintf(char *str, size_t size, const char  *restrict format, ...);
+void ft_snprintf_write(t_data *data);
 
 #endif

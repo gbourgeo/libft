@@ -12,21 +12,19 @@
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
+
+# include "ft_constants.h"
+
 # define GNL_BUFF_SIZE 8
 
-# include "libft.h"
-# include <sys/types.h>
-# include <sys/uio.h>
-# include <unistd.h>
-
-typedef struct		s_gnl
+typedef struct _align(32) s_gnl
 {
-	int				fd;
-	char			*copy;
-	struct s_gnl	*next;
-	struct s_gnl	*prev;
-}					t_gnl;
+    int           fd;
+    char         *copy;
+    struct s_gnl *next;
+    struct s_gnl *prev;
+} t_gnl;
 
-int					get_next_line(int const fd, char **line);
+int get_next_line(int filed, char **line);
 
 #endif

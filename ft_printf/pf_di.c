@@ -10,101 +10,114 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_base_printf.h"
+#include "ft_constants.h"
+#include "ft_routine_printf.h"
 #include "libft.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-static unsigned long long	get_modifier(t_dt *data)
+static unsigned long long get_modifier(t_data *data, t_conv *conversion)
 {
-	if (*data->tail == 'D')
-		return (va_arg(data->ap, unsigned long long));
-	if (data->flag.len_modifier & ARG_Z)
-		return (va_arg(data->ap, size_t));
-	if (data->flag.len_modifier & ARG_J)
-		return (va_arg(data->ap, intmax_t));
-	if (data->flag.len_modifier & ARG_LL)
-		return (va_arg(data->ap, long long));
-	if (data->flag.len_modifier & ARG_L)
-		return (va_arg(data->ap, long));
-	if (data->flag.len_modifier & ARG_HH)
-		return ((signed char)va_arg(data->ap, int));
-	if (data->flag.len_modifier & ARG_H)
-		return ((short)va_arg(data->ap, int));
-	return (va_arg(data->ap, int));
+    if (*conversion->head == 'D')
+    {
+        return (conversion->type == PRINTF_CONV_NONE) ?
+            va_arg(data->ap, unsigned long long) :
+            conversion->result;
+    }
+    if (TEST_BIT(conversion->flags.bits, PRINTF_LENGTH_Z))
+    {
+        return (conversion->type == PRINTF_CONV_NONE) ?
+            va_arg(data->ap, size_t) :
+            (size_t) conversion->result;
+    }
+    if (TEST_BIT(conversion->flags.bits, PRINTF_LENGTH_J))
+    {
+        return (conversion->type == PRINTF_CONV_NONE) ?
+            va_arg(data->ap, intmax_t) :
+            (intmax_t) conversion->result;
+    }
+    if (TEST_BIT(conversion->flags.bits, PRINTF_LENGTH_LL))
+    {
+        return (conversion->type == PRINTF_CONV_NONE) ?
+            va_arg(data->ap, long long) :
+            (long long) conversion->result;
+    }
+    if (TEST_BIT(conversion->flags.bits, PRINTF_LENGTH_L))
+    {
+        return (conversion->type == PRINTF_CONV_NONE) ?
+            va_arg(data->ap, long) :
+            (long) conversion->result;
+    }
+    if (TEST_BIT(conversion->flags.bits, PRINTF_LENGTH_HH))
+    {
+        return (conversion->type == PRINTF_CONV_NONE) ?
+            (signed char) va_arg(data->ap, int) :
+            (signed char) conversion->result;
+    }
+    if (TEST_BIT(conversion->flags.bits, PRINTF_LENGTH_H))
+    {
+        return (conversion->type == PRINTF_CONV_NONE) ?
+            (short) va_arg(data->ap, int) :
+            (short) conversion->result;
+    }
+    return (conversion->type == PRINTF_CONV_NONE) ?
+        va_arg(data->ap, int) :
+        (int) conversion->result;
 }
 
-static void					pf_di_c(t_dt *data, t_av *av, char c)
+ssize_t pf_di(t_data *data, t_conv *conversion)
 {
-	int		len;
+    char   *prefix      = NULL;
+    char   *src         = NULL;
+    ssize_t len         = 0;
+    ssize_t zeros       = 0;
+    ssize_t spaces      = 0;
+    int     is_negative = 0;
 
-	len = (data->flag.precision > av->len) ? data->flag.precision : av->len;
-	len++;
-	if (!data->flag.minus && data->flag.zero)
-		write_char(data, c);
-	if (!data->flag.minus)
-	{
-		while (data->flag.min_width > len && data->flag.min_width--)
-			write_char(data,
-						(data->flag.zero && !data->flag.point) ? '0' : ' ');
-	}
-	if (data->flag.minus || !data->flag.zero)
-		write_char(data, c);
-	while (len - 1 > av->len && len--)
-		write_char(data, '0');
-	write_str(data, av->s, av->len);
-	if (data->flag.minus)
-	{
-		len = (data->flag.precision > av->len) ? data->flag.precision : av->len;
-		len++;
-		while (data->flag.min_width > len && data->flag.min_width--)
-			write_char(data, ' ');
-	}
-}
+    conversion->result = get_modifier(data, conversion);
+    is_negative        = ((long) conversion->result < 0) ? -1 : 1;
+    src                = ft_ltoa((long) conversion->result * is_negative);
+    len                = (ssize_t) ft_strlen(src);
 
-static void					pf_di_noc(t_dt *data, t_av *av)
-{
-	int		len;
-
-	len = (data->flag.precision > av->len) ? data->flag.precision : av->len;
-	if (!data->flag.minus)
-	{
-		while (data->flag.min_width > len && data->flag.min_width--)
-			write_char(data,
-						(data->flag.zero && !data->flag.point) ? '0' : ' ');
-	}
-	while (len > av->len && len--)
-		write_char(data, '0');
-	if (!data->flag.point ||
-		(data->flag.point && (data->flag.precision > 0 || av->ui != 0)))
-		write_str(data, av->s, av->len);
-	else if (data->flag.min_width)
-		write_char(data, ' ');
-	if (data->flag.minus)
-	{
-		len = (data->flag.precision > av->len) ? data->flag.precision : av->len;
-		while (data->flag.min_width > len && data->flag.min_width--)
-			write_char(data, ' ');
-	}
-}
-
-void						pf_di(t_dt *data)
-{
-	t_av	av;
-	char	c;
-
-	av.ui = get_modifier(data);
-	av.s = ft_itoa_base(((long long)av.ui < 0) ? av.ui * -1 : av.ui, 10);
-	av.len = ft_strlen(av.s);
-	c = '\0';
-	if ((long long)av.ui < 0)
-		c = '-';
-	else if (data->flag.plus)
-		c = '+';
-	else if (data->flag.space)
-		c = ' ';
-	if (c)
-		pf_di_c(data, &av, c);
-	else
-		pf_di_noc(data, &av);
-	if (av.s)
-		free(av.s);
+    if ((long long) conversion->result < 0)
+    {
+        prefix = "-";
+    }
+    else if (TEST_BIT(conversion->flags.bits, PRINTF_FLAG_PLUS))
+    {
+        prefix = "+";
+    }
+    else if (TEST_BIT(conversion->flags.bits, PRINTF_FLAG_SPACE))
+    {
+        prefix = " ";
+    }
+    // Minimum width
+    compute_zeros_and_spaces(conversion,
+                             len,
+                             (prefix != NULL),
+                             &zeros,
+                             &spaces);
+    // New result allocation
+    if (pf_conv_new_result(conversion,
+                           len + zeros + spaces + (prefix != NULL) + 1)
+        != 0)
+    {
+        return (-1);
+    }
+    pre_write_modifiers(conversion,
+                        zeros,
+                        spaces,
+                        src,
+                        len,
+                        prefix);
+    post_write_modifiers(conversion,
+                         zeros,
+                         spaces,
+                         src,
+                         len,
+                         prefix);
+    free(src);
+    return (0);
 }

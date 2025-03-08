@@ -15,7 +15,7 @@
 
 # include "ft_base_printf.h"
 
-int			ft_dprintf(int fd, const char *restrict format, ...);
-void		ft_dprintf_write(t_dt *data);
+int  ft_dprintf(int filed, const char  *restrict format, ...);
+void ft_dprintf_write(t_data *data);
 
 #endif

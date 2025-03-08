@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atouc.c                                         :+:      :+:    :+:   */
+/*   ft_wstrlen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbourgeo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/17 09:35:38 by gbourgeo          #+#    #+#             */
-/*   Updated: 2017/08/17 09:36:48 by gbourgeo         ###   ########.fr       */
+/*   Created: 2013/11/19 16:22:13 by gbourgeo          #+#    #+#             */
+/*   Updated: 2013/12/17 06:02:11 by pc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
+#include <wchar.h>
 
-unsigned char		ft_atouc(char *str)
+size_t ft_wstrlen(const wchar_t *str)
 {
-	int				i;
-	unsigned char	c;
+    size_t len = 0;
 
-	i = 0;
-	c = 0;
-	while (i < 8)
-	{
-		if (str[i] == '1')
-			c += ft_pow(2, 7 - i);
-		i++;
-	}
-	return (c);
+    if (str != NULL)
+    {
+        while (str[len] != 0)
+        {
+            len++;
+        }
+    }
+    return (len);
 }

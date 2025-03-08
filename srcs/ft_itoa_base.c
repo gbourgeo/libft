@@ -10,30 +10,38 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
 #include "libft.h"
+#include <stddef.h>
 
-char			*ft_itoa_base(unsigned long long nb, unsigned long long base)
+char *ft_itoa_base(unsigned int num, unsigned int base)
 {
-	char				*base_str;
-	unsigned long long	size;
-	unsigned long long	i;
-	char				*ret;
+    const char  *base_str = "0123456789abcdef";
+    unsigned int size     = (num == 0);
+    unsigned int iter     = num;
+    char        *ret      = NULL;
 
-	base_str = "0123456789abcdef";
-	size = (nb == 0) ? 1 : 0;
-	i = nb;
-	while (i)
-	{
-		size++;
-		i /= base;
-	}
-	if ((ret = ft_strnew(size + 1)) == NULL)
-		return (NULL);
-	while (size-- > 0)
-	{
-		ret[size] = base_str[nb % base];
-		nb /= base;
-	}
-	return (ret);
+    if (base > ft_strlen(base_str))
+    {
+        return (NULL);
+    }
+    while (iter)
+    {
+        size++;
+        iter /= base;
+    }
+    ret = ft_strnew(size + 1);
+    if (ret != NULL)
+    {
+        ret[size] = '\0';
+        if (num == 0)
+        {
+            ret[0] = '0';
+        }
+        while (size-- > 0)
+        {
+            ret[size] = base_str[num % base];
+            num /= base;
+        }
+    }
+    return (ret);
 }

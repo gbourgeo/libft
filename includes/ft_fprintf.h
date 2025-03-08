@@ -13,10 +13,10 @@
 #ifndef FT_FPRINTF_H
 # define FT_FPRINTF_H
 
-# include <stdio.h>
 # include "ft_base_printf.h"
+# include <stdio.h>
 
-int			ft_fprintf(FILE *stream, const char *restrict format, ...);
-void		ft_fprintf_write(t_dt *data);
+int  ft_fprintf(FILE *stream, const char  *restrict format, ...);
+void ft_fprintf_write(t_data *data);
 
 #endif

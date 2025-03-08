@@ -10,20 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "ft_fprintf.h"
+#include "ft_base_printf.h"
 
-int			ft_fprintf(FILE *stream, const char *restrict format, ...)
+int ft_fprintf(FILE *stream, const char * restrict format, ...)
 {
-	t_dt	data;
-	int		ret;
+    t_data data = { 0 };
+    int    ret  = -1;
 
-	ft_memset(&data, 0, sizeof(data));
-	data.stream = stream;
-	data.tail = (char *)format;
-	data.writeto = ft_fprintf_write;
-	va_start(data.ap, format);
-	ret = pf_routine(&data);
-	va_end(data.ap);
-	return (ret);
+    if (pf_data_init(&data,
+                     PRINTF_OUTPUT_FILE_STREAM,
+                     (u_output) { .stream = stream },
+                     format) == 0)
+    {
+        va_start(data.ap, format);
+        ret = pf_routine(&data);
+        va_end(data.ap);
+    }
+    pf_data_clean(&data);
+    return (ret);
 }

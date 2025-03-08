@@ -10,21 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "ft_sprintf.h"
+#include "ft_base_printf.h"
+#include <stddef.h>
 
-int			ft_sprintf(char *str, const char *restrict format, ...)
+int ft_sprintf(char *str, const char * restrict format, ...)
 {
-	t_dt	data;
-	int		ret;
+    t_data data = { 0 };
+    int    ret  = -1;
 
-	ft_memset(&data, 0, sizeof(data));
-	*str = '\0';
-	data.str = str;
-	data.tail = (char *)format;
-	data.writeto = ft_sprintf_write;
-	va_start(data.ap, format);
-	ret = pf_routine(&data);
-	va_end(data.ap);
-	return (ret);
+    if (pf_data_init(&data,
+                     PRINTF_OUTPUT_BUFFER,
+                     (u_output) { .buff.str = str, .buff.size = (size_t) -1 },
+                     format) == 0)
+    {
+        va_start(data.ap, format);
+        ret = pf_routine(&data);
+        va_end(data.ap);
+    }
+    pf_data_clean(&data);
+    return (ret);
 }

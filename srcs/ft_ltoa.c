@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_ltoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,12 +12,12 @@
 
 #include <stdlib.h>
 
-char *ft_itoa(int num)
+char *ft_ltoa(long num)
 {
     char *ptr  = NULL;
     int   sign = 0;
     int   iter = 0;
-    int   src  = 0;
+    long  src  = 0;
 
     src  = num;
     iter = (num < 0 ? 3 : 2);

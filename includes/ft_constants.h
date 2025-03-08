@@ -13,12 +13,32 @@
 #ifndef FT_CONSTANTS_H
 # define FT_CONSTANTS_H
 
-# ifndef __align
-#  define __align(size)   __attribute__((aligned(size)))
+# ifndef _pack
+# define _pack __attribute__((packed))
 # endif
 
-# ifndef __unused
-#  define __unused        __attribute__((__unused__))
+# ifndef _align
+#  define _align(size) __attribute__((aligned(size)))
 # endif
 
-#endif /* FT_CONSTANTS_H */
+# ifndef _unused
+#  define _unused __attribute__((__unused__))
+# endif
+
+# ifndef LENGTH_OF
+#  define LENGTH_OF(table) (sizeof(table) / sizeof((table)[0]))
+# endif
+
+# ifndef TEST_BIT
+#  define TEST_BIT(storage, bit) ((storage) & (unsigned int)(bit))
+# endif
+
+# ifndef ASSIGN_BIT
+#  define ASSIGN_BIT(storage, bit) ((storage) |= (unsigned int)(bit))
+# endif
+
+# ifndef REMOVE_BIT
+#  define REMOVE_BIT(storage, bit) ((storage) &= ~(bit))
+# endif
+
+# endif /* FT_CONSTANTS_H */

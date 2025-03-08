@@ -10,19 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "ft_printf.h"
+#include "ft_base_printf.h"
+#include <unistd.h>
 
-int				ft_printf(const char *restrict format, ...)
+int ft_printf(const char * restrict format, ...)
 {
-	t_dt		data;
-	int			ret;
+    t_data data = { 0 };
+    int    ret  = -1;
 
-	ft_memset(&data, 0, sizeof(data));
-	data.tail = (char *)format;
-	data.writeto = ft_printf_write;
-	va_start(data.ap, format);
-	ret = pf_routine(&data);
-	va_end(data.ap);
-	return (ret);
+    if (pf_data_init(&data,
+                     PRINTF_OUTPUT_FILE_DESCRIPTOR,
+                     (u_output) { .fd = STDOUT_FILENO },
+                     format) == 0)
+    {
+        va_start(data.ap, format);
+        ret = pf_routine(&data);
+        va_end(data.ap);
+    }
+    pf_data_clean(&data);
+    return (ret);
 }

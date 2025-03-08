@@ -10,53 +10,80 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_base_printf.h"
+#include "ft_constants.h"
+#include "ft_routine_printf.h"
 #include "libft.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-static unsigned long long		get_modifier(t_dt *data)
+static unsigned long long get_modifier(t_data *data, t_conv *conversion)
 {
-	if (*data->tail == 'U')
-		return (va_arg(data->ap, unsigned long));
-	if (data->flag.len_modifier & ARG_Z)
-		return (va_arg(data->ap, size_t));
-	if (data->flag.len_modifier & ARG_J)
-		return (va_arg(data->ap, uintmax_t));
-	if (data->flag.len_modifier & ARG_LL)
-		return (va_arg(data->ap, unsigned long long));
-	if (data->flag.len_modifier & ARG_L)
-		return (va_arg(data->ap, unsigned long));
-	if (data->flag.len_modifier & ARG_HH)
-		return ((unsigned char)va_arg(data->ap, int));
-	if (data->flag.len_modifier & ARG_H)
-		return ((unsigned short)va_arg(data->ap, int));
-	return (va_arg(data->ap, unsigned int));
+    if (*conversion->head == 'U')
+    {
+        return (conversion->type == PRINTF_CONV_NONE) ?
+            va_arg(data->ap, unsigned long) :
+            (unsigned long) conversion->result;
+    }
+    if (TEST_BIT(conversion->flags.bits, PRINTF_LENGTH_Z))
+    {
+        return (conversion->type == PRINTF_CONV_NONE) ?
+            va_arg(data->ap, size_t) :
+            (size_t) conversion->result;
+    }
+    if (TEST_BIT(conversion->flags.bits, PRINTF_LENGTH_J))
+    {
+        return (conversion->type == PRINTF_CONV_NONE) ?
+            va_arg(data->ap, uintmax_t) :
+            (uintmax_t) conversion->result;
+    }
+    if (TEST_BIT(conversion->flags.bits, PRINTF_LENGTH_LL))
+    {
+        return (conversion->type == PRINTF_CONV_NONE) ?
+            va_arg(data->ap, unsigned long long) :
+            (unsigned long long) conversion->result;
+    }
+    if (TEST_BIT(conversion->flags.bits, PRINTF_LENGTH_L))
+    {
+        return (conversion->type == PRINTF_CONV_NONE) ?
+            va_arg(data->ap, unsigned long) :
+            (unsigned long) conversion->result;
+    }
+    if (TEST_BIT(conversion->flags.bits, PRINTF_LENGTH_HH))
+    {
+        return (conversion->type == PRINTF_CONV_NONE) ?
+            va_arg(data->ap, int) :
+            (int) conversion->result;
+    }
+    if (TEST_BIT(conversion->flags.bits, PRINTF_LENGTH_H))
+    {
+        return (conversion->type == PRINTF_CONV_NONE) ?
+            va_arg(data->ap, int) :
+            (int) conversion->result;
+    }
+    return (conversion->type == PRINTF_CONV_NONE) ?
+        va_arg(data->ap, unsigned int) :
+        (unsigned int) conversion->result;
 }
 
-void							pf_u(t_dt *data)
+ssize_t pf_u(t_data *data, t_conv *conversion)
 {
-	t_av		av;
-	int			len;
+    conversion->result = get_modifier(data, conversion);
+    char   *src        = ft_ltoa_base(conversion->result, 10);
+    ssize_t len        = (ssize_t) ft_strlen(src);
+    ssize_t zeros      = 0;
+    ssize_t spaces     = 0;
 
-	av.ui = get_modifier(data);
-	av.s = ft_itoa_base(av.ui, 10);
-	av.len = ft_strlen(av.s);
-	len = (data->flag.precision > av.len) ? data->flag.precision : av.len;
-	if (!data->flag.minus)
-	{
-		while (data->flag.min_width > len && data->flag.min_width--)
-			write_char(data, (data->flag.zero) ? '0' : ' ');
-	}
-	if (data->flag.hash)
-		write_char(data, '0');
-	while (data->flag.precision > av.len && data->flag.precision--)
-		write_char(data, '0');
-	if (!data->flag.point || av.ui)
-		write_str(data, av.s, av.len);
-	if (data->flag.minus && data->flag.min_width > data->flag.precision)
-	{
-		while (data->flag.min_width > len && data->flag.min_width--)
-			write_char(data, ' ');
-	}
-	if (av.s)
-		free(av.s);
+    // Minimum width
+    compute_zeros_and_spaces(conversion, len, 0, &zeros, &spaces);
+    // New result allocation
+    if (pf_conv_new_result(conversion, len + zeros + spaces) != 0)
+    {
+        return (-1);
+    }
+    pre_write_modifiers(conversion, zeros, spaces, src, len, NULL);
+    post_write_modifiers(conversion, zeros, spaces, src, len, NULL);
+    free(src);
+    return (0);
 }

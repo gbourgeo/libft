@@ -1,2 +1,4 @@
 libft.a
 obj/
+.depend
+a.out

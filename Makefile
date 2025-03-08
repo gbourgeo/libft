@@ -1,65 +1,86 @@
 # **************************************************************************** #
-#																			  #
-#														 :::	  ::::::::	#
-#	Makefile										   :+:	  :+:	:+:	#
-#													 +:+ +:+		 +:+	  #
-#	By: gbourgeo <gbourgeo@student.42.fr>		  +#+  +:+	   +#+		 #
-#												 +#+#+#+#+#+   +#+			#
-#	Created: 2013/11/20 18:41:05 by gbourgeo		  #+#	#+#			  #
-#	Updated: 2020/11/18 20:05:42 by gbourgeo		 ###   ########.fr		#
-#																			  #
+#																			   #
+#														 :::	  ::::::::	   #
+#	Makefile										   :+:	  :+:	:+:		   #
+#													 +:+ +:+		 +:+	   #
+#	By: gbourgeo <gbourgeo@student.42.fr>		  +#+  +:+	   +#+			   #
+#												 +#+#+#+#+#+   +#+			   #
+#	Created: 2013/11/20 18:41:05 by gbourgeo		  #+#	#+#				   #
+#	Updated: 2020/11/18 20:05:42 by gbourgeo		 ###   ########.fr		   #
+#																			   #
 # **************************************************************************** #
 
 NAME = libft.a
 
 SRC_DIR = srcs/
-SRC = ft_strlen.c ft_strdup.c ft_strcpy.c ft_strncpy.c ft_strcat.c \
-	ft_strncat.c ft_strlcat.c ft_strchr.c ft_strrchr.c ft_strstr.c \
-	ft_strnstr.c ft_strcmp.c ft_strncmp.c ft_atoi.c ft_isalpha.c ft_isalnum.c \
-	ft_isdigit.c ft_isascii.c ft_isprint.c ft_toupper.c ft_tolower.c \
-	ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memchr.c ft_memmove.c \
-	ft_memcmp.c \
-	ft_memalloc.c ft_memdel.c ft_strnew.c ft_strdel.c ft_strclr.c ft_striter.c \
-	ft_striteri.c ft_strmap.c ft_strmapi.c ft_strequ.c ft_strnequ.c \
-	ft_strsub.c ft_strjoin.c ft_strtrim.c ft_strsplit.c ft_itoa.c ft_putchar.c \
-	ft_putstr.c ft_putendl.c ft_putnbr.c ft_putchar_fd.c ft_putstr_fd.c \
-	ft_putendl_fd.c ft_putnbr_fd.c \
-	ft_lstadd.c ft_lstdel.c ft_lstdelone.c ft_lstiter.c ft_lstmap.c ft_lstnew.c\
-	ft_lstaddend.c ft_lstswap.c \
-	ft_tabdup.c ft_tablen.c ft_puttab.c ft_puttab_fd.c ft_puttabc.c \
-	ft_puttabc_fd.c ft_tabdel.c \
-	get_next_line.c \
-	ft_split.c ft_split_whitespaces.c ft_str2join.c ft_strcdup.c \
-	ft_strcharset.c ft_stricpy.c ft_strndup.c ft_strrcdup.c ft_freestr.c \
-	ft_freetab.c ft_iswhitespace.c ft_split_whitespaces.c ft_pow.c ft_atol.c \
-	ft_atol_base.c
+SRC = ft_atoi.c ft_atol_base.c ft_atol.c ft_itoa_base.c ft_itoa.c             \
+	ft_ltoa_base.c ft_ltoa.c ft_pow.c ft_toupper.c ft_tolower.c               \
+	ft_bzero.c ft_strlen.c ft_strdup.c ft_strcpy.c ft_strncpy.c ft_strcat.c   \
+	ft_strncat.c ft_strlcat.c ft_strchr.c ft_strrchr.c ft_strstr.c            \
+	ft_strnstr.c ft_strcmp.c ft_strncmp.c ft_strnew.c ft_strdel.c ft_strclr.c \
+	ft_striter.c ft_striteri.c ft_strmap.c ft_strmapi.c ft_strequ.c           \
+	ft_strnequ.c ft_strsub.c ft_strjoin.c ft_strtrim.c ft_strsplit.c          \
+	ft_split.c ft_split_whitespaces.c ft_str2join.c ft_strcdup.c              \
+	ft_strcharset.c ft_stricpy.c ft_strndup.c ft_strrcdup.c ft_freestr.c      \
+	ft_freetab.c ft_split_whitespaces.c ft_strtoupper.c ft_wstrlen.c          \
+	get_next_line.c                                                           \
+	ft_tabdup.c ft_tablen.c ft_tabdel.c                                       \
+	ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c          \
+	ft_iswhitespace.c                                                         \
+	ft_lstadd.c ft_lstaddend.c ft_lstdel.c ft_lstdelone.c ft_lstiter.c        \
+	ft_lstmap.c ft_lstnew.c ft_lstswap.c                                      \
+	ft_memalloc.c ft_memccpy.c ft_memchr.c ft_memcmp.c ft_memcpy.c            \
+	ft_memdel.c ft_memmove.c ft_memset.c                                      \
+	ft_putbits.c ft_putchar_fd.c ft_putchar.c ft_putendl_fd.c ft_putendl.c    \
+	ft_putnbr_fd.c  ft_putnbr.c ft_putstr_fd.c ft_putstr.c  ft_puttab_fd.c    \
+	ft_puttab.c ft_puttabc_fd.c ft_puttabc.c
 
 PRINTF_DIR = ft_printf/
-PRINTF_SRC = ft_printf.c ft_printf_write.c
-PRINTF_BASE = ft_atouc.c ft_itoa_base.c ft_strtoupper.c pf_c.c	pf_x.c	\
-		pf_di.c pf_o.c pf_p.c pf_percent.c pf_s.c pf_u.c pf_wchar.c pf_writes.c \
-		pf_routine.c
-FPRINTF_SRC = ft_fprintf.c ft_fprintf_write.c
-DPRINTF_SRC = ft_dprintf.c ft_dprintf_write.c
-SPRINTF_SRC = ft_sprintf.c ft_sprintf_write.c
-SNPRINTF_SRC = ft_snprintf.c ft_snprintf_write.c
-VPRINTF_SRC = ft_vprintf.c ft_vprintf_write.c
-VDPRINTF_SRC = ft_vdprintf.c ft_vdprintf_write.c
+PRINTF_SRC = ft_printf.c
+FPRINTF_SRC = ft_fprintf.c
+DPRINTF_SRC = ft_dprintf.c
+SPRINTF_SRC = ft_sprintf.c
+SNPRINTF_SRC = ft_snprintf.c
+VPRINTF_SRC = ft_vprintf.c
+VDPRINTF_SRC = ft_vdprintf.c
+PRINTF_BASE = pf_c_big.c           	\
+			pf_c_small.c           	\
+			pf_conversion_parser.c 	\
+			pf_conversion_writers.c \
+			pf_conversion.c        	\
+			pf_data.c              	\
+			pf_di.c                	\
+			pf_modifiers_parser.c  	\
+			pf_modifiers_writers.c 	\
+			pf_o.c                 	\
+			pf_output.c            	\
+			pf_p.c                 	\
+			pf_percent.c           	\
+			pf_routine.c           	\
+			pf_s_big.c             	\
+			pf_s_small.c           	\
+			pf_u.c                 	\
+			pf_x_big.c             	\
+			pf_x_small.c			\
+			pf_wide_char.c
+
 
 UNIT_TESTS_DIR = unit_test/
 UNIT_TEST_SRC = main.c
 
 OBJ_DIR = obj/
 OBJ_SRC	= $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
-OBJ_PRINTF = $(addprefix $(OBJ_DIR), $(PRINTF_SRC:.c=.o))
-OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(PRINTF_BASE:.c=.o))
-OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(FPRINTF_SRC:.c=.o))
-OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(DPRINTF_SRC:.c=.o))
-OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(SPRINTF_SRC:.c=.o))
-OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(SNPRINTF_SRC:.c=.o))
-OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(VPRINTF_SRC:.c=.o))
-OBJ_PRINTF += $(addprefix $(OBJ_DIR), $(VDPRINTF_SRC:.c=.o))
+OBJ_SRC += $(addprefix $(OBJ_DIR), $(PRINTF_SRC:.c=.o))
+OBJ_SRC += $(addprefix $(OBJ_DIR), $(PRINTF_BASE:.c=.o))
+OBJ_SRC += $(addprefix $(OBJ_DIR), $(FPRINTF_SRC:.c=.o))
+OBJ_SRC += $(addprefix $(OBJ_DIR), $(DPRINTF_SRC:.c=.o))
+OBJ_SRC += $(addprefix $(OBJ_DIR), $(SPRINTF_SRC:.c=.o))
+OBJ_SRC += $(addprefix $(OBJ_DIR), $(SNPRINTF_SRC:.c=.o))
+OBJ_SRC += $(addprefix $(OBJ_DIR), $(VPRINTF_SRC:.c=.o))
+OBJ_SRC += $(addprefix $(OBJ_DIR), $(VDPRINTF_SRC:.c=.o))
 OBJ_UNIT_TEST = $(addprefix $(OBJ_DIR), $(UNIT_TEST_SRC:.c=.o))
+
+DEPENDS = $(OBJ_SRC:.o=.d)
 
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
@@ -67,26 +88,25 @@ CFLAGS = -Wall -Werror -Wextra
 INCLUDE_DIR = includes/
 INCLUDES = -I $(INCLUDE_DIR)
 
-.PHONY: premade clean fclean re test
+.PHONY: clean fclean re test debug
 
-all: premade $(NAME)
-
-premade:
-	@echo '[Compilation de la libft]'
-	@mkdir -p $(OBJ_DIR)
+all: $(NAME)
 
 $(NAME): $(OBJ_SRC) $(OBJ_PRINTF)
 	@ar rc $@ $^
 	@ranlib $@
-	@echo " > $(NAME)"
+	@echo "Created: $(NAME)"
+
+# Include all .d files
+-include $(DEPENDS)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	@/bin/echo -n "."
-	@$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDES)
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -MMD -o $@ -c $< $(INCLUDES) $(ENV)
 
 $(OBJ_DIR)%.o: $(PRINTF_DIR)%.c
-	@/bin/echo -n "."
-	@$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDES)
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -MMD -o $@ -c $< $(INCLUDES) $(ENV)
 
 clean:
 	@if test -d $(OBJ_DIR) ; then rm -rf $(OBJ_DIR) ; echo Libft .o erased. ; fi
@@ -98,7 +118,11 @@ fclean: clean
 re: fclean all
 
 $(OBJ_DIR)%.o: $(UNIT_TESTS_DIR)%.c
-	$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDES)
+	$(CC) -o $@ -c $< $(INCLUDES)
 
 test: all $(OBJ_UNIT_TEST)
-	$(CC) -o $@ $(OBJ_UNIT_TEST) -L. -lft
+	$(CC) $(CFLAGS) -o $@ $(OBJ_UNIT_TEST) -L. -lft
+
+debug: ENV = -DPRINTF_DEBUG
+debug: CFLAGS += -g -O0
+debug: re

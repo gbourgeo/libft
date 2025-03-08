@@ -10,21 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include "libft.h"
 #include "ft_vdprintf.h"
+#include "ft_base_printf.h"
 
-int				ft_vdprintf(int fd, const char *format, va_list ap)
+int ft_vdprintf(int filed, const char *format, va_list argp)
 {
-	t_dt		data;
-	int			ret;
+    t_data data = { 0 };
+    int    ret  = -1;
 
-	ft_memset(&data, 0, sizeof(data));
-	data.fd = fd;
-	data.tail = (char *)format;
-	data.writeto = ft_vdprintf_write;
-	va_copy(data.ap, ap);
-	ret = pf_routine(&data);
-	va_end(data.ap);
-	return (ret);
+    if (pf_data_init(&data,
+                     PRINTF_OUTPUT_FILE_DESCRIPTOR,
+                     (u_output) { .fd = filed },
+                     format) == 0)
+    {
+        va_copy(data.ap, argp);
+        ret = pf_routine(&data);
+        va_end(data.ap);
+    }
+    pf_data_clean(&data);
+    return (ret);
 }

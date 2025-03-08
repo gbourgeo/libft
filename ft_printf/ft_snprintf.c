@@ -10,23 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "ft_snprintf.h"
+#include "ft_base_printf.h"
+#include <stddef.h>
 
-int			ft_snprintf(char *str, size_t size,
-						const char *restrict format, ...)
+int ft_snprintf(char *str, size_t size,
+                const char * restrict format, ...)
 {
-	t_dt	data;
-	int		ret;
+    t_data data = { 0 };
+    int    ret  = -1;
 
-	ft_memset(&data, 0, sizeof(data));
-	*str = '\0';
-	data.str = str;
-	data.str_size = size;
-	data.tail = (char *)format;
-	data.writeto = ft_snprintf_write;
-	va_start(data.ap, format);
-	ret = pf_routine(&data);
-	va_end(data.ap);
-	return (ret);
+    if (pf_data_init(&data,
+                     PRINTF_OUTPUT_BUFFER,
+                     (u_output) { .buff.str = str, .buff.size = size },
+                     format) == 0)
+    {
+        va_start(data.ap, format);
+        ret = pf_routine(&data);
+        va_end(data.ap);
+    }
+    pf_data_clean(&data);
+    return (ret);
 }
