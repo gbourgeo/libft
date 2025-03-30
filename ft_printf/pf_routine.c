@@ -27,15 +27,16 @@ int pf_routine(t_data *data)
             {
                 if (*data->head != '\0'
                     && pf_parse_specifiers(data, &conversion) != 0)
-                    {
-                        return (-1);
-                    }
-                    data->wrote += pf_output_conversion(data, &conversion);
-                    #ifdef PRINTF_DEBUG
-                    pf_parameter_table_debug(&data->parameters);
-                    pf_conversion_debug(&conversion);
-                    #endif
+                {
+                    return (-1);
                 }
+                data->wrote += pf_output_conversion(data, &conversion);
+#ifdef PRINTF_DEBUG
+                pf_parameter_table_debug(&data->parameters);
+                pf_conversion_debug(&conversion);
+#endif
+            }
+            pf_conversion_free(&conversion);
             data->tail = data->head + 1;
         }
         data->head += (*data->head != '\0') ? 1 : 0;

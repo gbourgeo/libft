@@ -20,7 +20,7 @@
 
 void pf_conversion_debug(t_conv *conversion)
 {
-    ssize_t iter       = 0;
+    ssize_t iter = 0;
 
     (void) write(STDOUT_FILENO, "\n\e[34m** CONVERSION\n", 21);
     write(STDOUT_FILENO, "[", 1);
@@ -63,4 +63,9 @@ void pf_conversion_init(t_conv *conversion, const char *src)
     conversion->pos             = 0;
     conversion->len             = 0;
     conversion->error_found     = 0;
+}
+
+void pf_conversion_free(t_conv *conversion)
+{
+    free(conversion->value);
 }

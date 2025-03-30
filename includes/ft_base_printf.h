@@ -101,6 +101,7 @@ void     pf_parameter_table_debug(t_dyntab *parameters);
 void     pf_parameter_table_free(t_dyntab *parameters);
 int      pf_parameter_table_init(t_dyntab *parameters);
 
+void pf_conversion_free(t_conv *conversion);
 void pf_conversion_init(t_conv *conversion, const char *src);
 void pf_conversion_debug(t_conv *conversion);
 

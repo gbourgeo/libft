@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "ft_base_printf.h"
-#include <_stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
