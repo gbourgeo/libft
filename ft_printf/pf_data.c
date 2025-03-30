@@ -11,85 +11,65 @@
 /* ************************************************************************** */
 
 #include "ft_base_printf.h"
+#include <_stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int pf_data_init(t_data     *data,
                  e_output    family,
                  u_output    output,
                  const char *format)
 {
-    size_t iter = 0;
-
-    data->family = PRINTF_OUTPUT_FILE_DESCRIPTOR;
+    data->family = family;
     if (family == PRINTF_OUTPUT_FILE_DESCRIPTOR)
     {
         data->output.fd = output.fd;
     }
-    else if (PRINTF_OUTPUT_FILE_STREAM)
+    else if (family == PRINTF_OUTPUT_FILE_STREAM)
     {
         data->output.stream = output.stream;
     }
-    else if (PRINTF_OUTPUT_BUFFER)
+    else if (family == PRINTF_OUTPUT_BUFFER)
     {
         data->output.buff.str  = output.buff.str;
         data->output.buff.pos  = 0;
         data->output.buff.size = output.buff.size;
     }
-    data->tail             = format;
-    data->head             = format;
-    data->conversion_table = (t_conv *) malloc(sizeof(t_conv) * PRELOAD_CONVERSION_NB);
-    if (data->conversion_table == NULL)
-    {
-        return (-1);
-    }
-    while (iter < PRELOAD_CONVERSION_NB)
-    {
-        pf_conv_init(data->conversion_table + iter);
-        iter++;
-    }
-    data->conversion_pos = 0;
-    data->conversion_len = PRELOAD_CONVERSION_NB;
-    return (0);
+    data->tail = format;
+    data->head = format;
+    return (pf_parameter_table_init(&data->parameters) != 0);
 }
 
 void pf_data_clean(t_data *data)
 {
-    ssize_t iter       = 0;
-    t_conv *conversion = NULL;
-
-    while (iter < data->conversion_pos)
-    {
-        conversion = data->conversion_table + iter;
-        free(conversion->converted);
-        iter++;
-    }
-    data->conversion_pos = 0;
-    free(data->conversion_table);
-    data->conversion_table = NULL;
+    pf_parameter_table_free(&data->parameters);
 }
 
-t_conv *pf_data_get_next_conversion(t_data *data, const char *tail, const char *head)
+int pf_data_dyn_table_check(t_dyntab *dyntable, size_t elem_size, void (*elem_initialiser)(void *))
 {
-    t_conv *conv = NULL;
-    size_t  len  = 0;
+    void   *ptrtable = NULL;
+    ssize_t iter     = 0;
 
-    /* Augmentation du tableau de résultat de conversion */
-    while (data->conversion_pos >= data->conversion_len)
+    if (dyntable->pos < 0)
     {
-        data->conversion_len += PRELOAD_CONVERSION_NB;
-        len  = sizeof(t_conv) * data->conversion_len;
-        conv = (t_conv *) realloc(data->conversion_table, len);
-        if (conv == NULL)
-        {
-            return (NULL);
-        }
-        data->conversion_table = conv;
+        return (-1);
     }
-    conv = data->conversion_table + data->conversion_pos;
-    /* Incrément de la position à l'élément suivant dans le tableau */
-    data->conversion_pos++;
-    /* Initialisation du nouvel élément */
-    conv->tail = tail;
-    conv->head = head;
-    return (conv);
+    /* Augmentation du tableau des paramètres si nécessaire */
+    if (dyntable->pos + 1 >= dyntable->len)
+    {
+        dyntable->len += PRELOAD_CONVERSION_NB;
+        ptrtable = realloc(dyntable->table, elem_size * dyntable->len);
+        if (ptrtable == NULL)
+        {
+            return (-1);
+        }
+        dyntable->table = ptrtable;
+        iter            = dyntable->pos;
+        while (iter < dyntable->len)
+        {
+            elem_initialiser(dyntable->table + (iter * elem_size));
+            iter++;
+        }
+    }
+    return (0);
 }

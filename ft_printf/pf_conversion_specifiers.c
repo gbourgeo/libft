@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pf_modifiers_writers.c                             :+:      :+:    :+:   */
+/*   pf_conversion_specifiers.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -17,11 +17,12 @@
 #include <stddef.h>
 
 void compute_zeros_and_spaces(
-    t_conv     *conversion,
-    ssize_t     result_len,
-    ssize_t     prefix_len,
-    ssize_t    *zeros,
-    ssize_t    *spaces)
+    t_param *parameter,
+    t_conv  *conversion,
+    ssize_t  result_len,
+    ssize_t  prefix_len,
+    ssize_t *zeros,
+    ssize_t *spaces)
 {
     if (conversion->flags.precision > result_len)
     {
@@ -38,9 +39,13 @@ void compute_zeros_and_spaces(
         else
         {
             *spaces = conversion->flags.min_width - (*zeros + result_len + prefix_len);
+            if (*spaces < 0)
+            {
+                *spaces = 0;
+            }
             if (TEST_BIT(conversion->flags.bits, PRINTF_FLAG_DOT)
                 && conversion->flags.precision == 0
-                && conversion->result == 0)
+                && parameter->value == 0)
             {
                 *spaces += 1;
             }
@@ -48,7 +53,8 @@ void compute_zeros_and_spaces(
     }
 }
 
-void pre_write_modifiers(
+void pre_convert_specifiers(
+    t_param    *parameter,
     t_conv     *conversion,
     ssize_t     zeros,
     ssize_t     spaces,
@@ -64,14 +70,15 @@ void pre_write_modifiers(
         pf_conv_nwrite_char(conversion, '0', zeros);
         if (!TEST_BIT(conversion->flags.bits, PRINTF_FLAG_DOT)
             || conversion->flags.precision != 0
-            || conversion->result > 0)
+            || parameter->value > 0)
         {
             pf_conv_nwrite_str(conversion, src, len);
         }
     }
 }
 
-void post_write_modifiers(
+void post_convert_specifiers(
+    t_param    *parameter,
     t_conv     *conversion,
     ssize_t     zeros,
     ssize_t     spaces,
@@ -85,7 +92,7 @@ void post_write_modifiers(
         pf_conv_nwrite_char(conversion, '0', zeros);
         if (!TEST_BIT(conversion->flags.bits, PRINTF_FLAG_DOT)
             || conversion->flags.precision != 0
-            || conversion->result > 0)
+            || parameter->value > 0)
         {
             pf_conv_nwrite_str(conversion, src, len);
         }

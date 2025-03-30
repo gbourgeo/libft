@@ -17,157 +17,132 @@
 #include <stddef.h>
 #include <stdint.h>
 
-static int pf_atoi(t_data *data)
+static int printf_flag_hash(t_data _unused *data, t_conv *conv)
 {
-    int res = 0;
+    ASSIGN_BIT(conv->flags.bits, PRINTF_FLAG_HASH);
+    return (0);
+}
 
-    while (*data->head != '\0' && ft_isdigit(*data->head) != 0)
+static int printf_flag_minus(t_data _unused *data, t_conv *conv)
+{
+    ASSIGN_BIT(conv->flags.bits, PRINTF_FLAG_MINUS);
+    return (0);
+}
+
+static int printf_flag_plus(t_data _unused *data, t_conv *conv)
+{
+    ASSIGN_BIT(conv->flags.bits, PRINTF_FLAG_PLUS);
+    return (0);
+}
+
+static int printf_flag_space(t_data _unused *data, t_conv *conv)
+{
+    ASSIGN_BIT(conv->flags.bits, PRINTF_FLAG_SPACE);
+    return (0);
+}
+
+static int printf_flag_zero(t_data _unused *data, t_conv *conv)
+{
+    ASSIGN_BIT(conv->flags.bits, PRINTF_FLAG_ZERO);
+    return (0);
+}
+
+static int printf_flag_star(t_data *data, t_conv *conv)
+{
+    t_param *param = pf_parameter_new(&data->parameters);
+
+    ASSIGN_BIT(conv->flags.bits, PRINTF_FLAG_STAR);
+    param->value = va_arg(data->ap, int);
+    if (!TEST_BIT(conv->flags.bits, PRINTF_FLAG_DOT))
     {
-        res = res * 10;
-        res = res + *data->head - '0';
+        param->status         = PRINTF_PARAMETER_RECOVERED;
+        conv->flags.min_width = (long) param->value;
+        if (conv->flags.min_width < 0)
+        {
+            REMOVE_BIT(conv->flags.bits, (uint32_t) PRINTF_FLAG_ZERO);
+            ASSIGN_BIT(conv->flags.bits, PRINTF_FLAG_MINUS);
+            conv->flags.min_width = -conv->flags.min_width;
+        }
+    }
+    else
+    {
+        param->status         = PRINTF_PARAMETER_RECOVERED;
+        conv->flags.precision = (long) param->value;
+        if (conv->flags.precision < 0)
+        {
+            REMOVE_BIT(conv->flags.bits, (uint32_t) PRINTF_FLAG_DOT);
+            REMOVE_BIT(conv->flags.bits, (uint32_t) PRINTF_FLAG_STAR);
+            conv->flags.precision = 0;
+        }
+    }
+    return (0);
+}
+
+static int printf_flag_dot(t_data _unused *data, t_conv *conv)
+{
+    ASSIGN_BIT(conv->flags.bits, PRINTF_FLAG_DOT);
+    return (0);
+}
+
+static int printf_flag_is_digit(t_data *data, t_conv *conv)
+{
+    if (!TEST_BIT(conv->flags.bits, PRINTF_FLAG_DOT))
+    {
+        conv->flags.min_width = ft_atol(data->head);
+    }
+    else
+    {
+        conv->flags.precision = ft_atol(data->head);
+        if (conv->flags.precision < 0)
+        {
+            REMOVE_BIT(conv->flags.bits, (uint32_t) PRINTF_FLAG_DOT);
+            conv->flags.precision = 0;
+        }
+    }
+    while (ft_isdigit(*(data->head + 1)) != 0)
+    {
         data->head++;
     }
-    return (res);
-}
-
-static int printf_flag_hash(t_data *data, t_conv **conversion)
-{
-    ASSIGN_BIT((*conversion)->flags.bits, PRINTF_FLAG_HASH);
-    data->head++;
     return (0);
 }
 
-static int printf_flag_minus(t_data *data, t_conv **conversion)
+static int printf_length_h(t_data _unused *data, t_conv *conv)
 {
-    ASSIGN_BIT((*conversion)->flags.bits, PRINTF_FLAG_MINUS);
-    data->head++;
-    return (0);
-}
-
-static int printf_flag_plus(t_data *data, t_conv **conversion)
-{
-    ASSIGN_BIT((*conversion)->flags.bits, PRINTF_FLAG_PLUS);
-    data->head++;
-    return (0);
-}
-
-static int printf_flag_space(t_data *data, t_conv **conversion)
-{
-    ASSIGN_BIT((*conversion)->flags.bits, PRINTF_FLAG_SPACE);
-    data->head++;
-    return (0);
-}
-
-static int printf_flag_zero(t_data *data, t_conv **conversion)
-{
-    ASSIGN_BIT((*conversion)->flags.bits, PRINTF_FLAG_ZERO);
-    data->head++;
-    return (0);
-}
-
-static int printf_flag_star(t_data *data, t_conv **conversion)
-{
-    t_conv *new_conversion = NULL;
-
-    ASSIGN_BIT((*conversion)->flags.bits, PRINTF_FLAG_STAR);
-    (*conversion)->result = va_arg(data->ap, int);
-    if (!TEST_BIT((*conversion)->flags.bits, PRINTF_FLAG_DOT))
+    if (!TEST_BIT(conv->flags.bits, PRINTF_LENGTH_H))
     {
-        (*conversion)->type            = PRINTF_CONV_LENGTH_MODIFIER;
-        (*conversion)->flags.min_width = (long) (*conversion)->result;
-        if ((*conversion)->flags.min_width < 0)
-        {
-            REMOVE_BIT((*conversion)->flags.bits, (uint32_t) PRINTF_FLAG_ZERO);
-            ASSIGN_BIT((*conversion)->flags.bits, PRINTF_FLAG_MINUS);
-            (*conversion)->flags.min_width = -(*conversion)->flags.min_width;
-        }
+        ASSIGN_BIT(conv->flags.bits, PRINTF_LENGTH_H);
     }
     else
     {
-        (*conversion)->type            = PRINTF_CONV_PRECISION;
-        (*conversion)->flags.precision = (long) (*conversion)->result;
-        if ((*conversion)->flags.precision < 0)
-        {
-            REMOVE_BIT((*conversion)->flags.bits, (uint32_t) PRINTF_FLAG_DOT);
-            REMOVE_BIT((*conversion)->flags.bits, (uint32_t) PRINTF_FLAG_STAR);
-            (*conversion)->flags.precision = 0;
-        }
+        ASSIGN_BIT(conv->flags.bits, PRINTF_LENGTH_HH);
+        REMOVE_BIT(conv->flags.bits, PRINTF_LENGTH_H);
     }
-    data->head++;
-    (*conversion)->head = data->head;
-    new_conversion      = pf_data_get_next_conversion(data, (*conversion)->tail, data->head);
-    if (new_conversion == NULL)
-    {
-        return (-1);
-    }
-    *conversion = new_conversion;
     return (0);
 }
 
-static int printf_flag_dot(t_data *data, t_conv **conversion)
+static int printf_length_l(t_data _unused *data, t_conv *conv)
 {
-    ASSIGN_BIT((*conversion)->flags.bits, PRINTF_FLAG_DOT);
-    data->head++;
-    return (0);
-}
-
-static int printf_flag_is_digit(t_data *data, t_conv **conversion)
-{
-    if (!TEST_BIT((*conversion)->flags.bits, PRINTF_FLAG_DOT))
+    if (!TEST_BIT(conv->flags.bits, PRINTF_LENGTH_L))
     {
-        (*conversion)->flags.min_width = pf_atoi(data);
+        ASSIGN_BIT(conv->flags.bits, PRINTF_LENGTH_L);
     }
     else
     {
-        (*conversion)->flags.precision = pf_atoi(data);
-        if ((*conversion)->flags.precision < 0)
-        {
-            REMOVE_BIT((*conversion)->flags.bits, (uint32_t) PRINTF_FLAG_DOT);
-            (*conversion)->flags.precision = 0;
-        }
+        ASSIGN_BIT(conv->flags.bits, PRINTF_LENGTH_LL);
+        REMOVE_BIT(conv->flags.bits, PRINTF_LENGTH_L);
     }
     return (0);
 }
 
-static int printf_length_h(t_data *data, t_conv **conversion)
+static int printf_length_j(t_data _unused *data, t_conv *conv)
 {
-    if (!TEST_BIT((*conversion)->flags.bits, PRINTF_LENGTH_H))
-    {
-        ASSIGN_BIT((*conversion)->flags.bits, PRINTF_LENGTH_H);
-    }
-    else
-    {
-        ASSIGN_BIT((*conversion)->flags.bits, PRINTF_LENGTH_HH);
-    }
-    data->head++;
+    ASSIGN_BIT(conv->flags.bits, PRINTF_LENGTH_J);
     return (0);
 }
 
-static int printf_length_l(t_data *data, t_conv **conversion)
+static int printf_length_z(t_data _unused *data, t_conv *conv)
 {
-    if (!TEST_BIT((*conversion)->flags.bits, PRINTF_LENGTH_L))
-    {
-        ASSIGN_BIT((*conversion)->flags.bits, PRINTF_LENGTH_L);
-    }
-    else
-    {
-        ASSIGN_BIT((*conversion)->flags.bits, PRINTF_LENGTH_LL);
-    }
-    data->head++;
-    return (0);
-}
-
-static int printf_length_j(t_data *data, t_conv **conversion)
-{
-    ASSIGN_BIT((*conversion)->flags.bits, PRINTF_LENGTH_J);
-    data->head++;
-    return (0);
-}
-
-static int printf_length_z(t_data *data, t_conv **conversion)
-{
-    ASSIGN_BIT((*conversion)->flags.bits, PRINTF_LENGTH_Z);
-    data->head++;
+    ASSIGN_BIT(conv->flags.bits, PRINTF_LENGTH_Z);
     return (0);
 }
 
@@ -176,54 +151,49 @@ static inline ssize_t pf_abs(ssize_t value)
     return ((value < 0) ? -value : value);
 }
 
-static int printf_conv_position(t_data *data, t_conv **conversion)
+static int printf_param_position(t_data *data, t_conv *conv)
 {
-    t_conv *new_conv = NULL;
-    ssize_t real_pos = pf_abs((*conversion)->flags.min_width);
+    t_param *param       = NULL;
+    ssize_t  asked_pos   = pf_abs(conv->flags.min_width) - 1;
+    ssize_t  current_pos = data->parameters.pos - 1;
 
     /* Reset du min_width */
-    (*conversion)->flags.min_width = 0;
-    /* Erreur */
-    if (real_pos == 0)
+    conv->flags.min_width = 0;
+    if (asked_pos < 0)
     {
-        data->head -= 1;
         return (-1);
     }
-    data->head++;
-    while (data->conversion_pos < real_pos - 1)
+    /* Boucle sur les arguments jusqu'à la position demandée */
+    while (current_pos < asked_pos)
     {
-        new_conv = pf_data_get_next_conversion(data, NULL, NULL);
-        if (new_conv->type == PRINTF_CONV_NONE)
+        param = pf_parameter_new(&data->parameters);
+        if (param->status == PRINTF_PARAMETER_NOT_RECOVERED)
         {
-            new_conv->type   = PRINTF_CONV_UNIDENTIFIED;
-            new_conv->tail   = NULL;
-            new_conv->head   = NULL;
-            new_conv->result = va_arg(data->ap, unsigned long long);
+            param->value  = va_arg(data->ap, unsigned long long);
+            param->status = PRINTF_PARAMETER_RECOVERED;
         }
+        current_pos++;
     }
-    data->conversion_pos = real_pos - 1;
-    new_conv             = pf_data_get_next_conversion(data, (*conversion)->tail, data->head);
-    pf_conv_init(*conversion);
-    *conversion = new_conv;
+    data->parameters.pos = asked_pos;
     return (0);
 }
 
-int pf_parse_conversion_modifiers(t_data *data, t_conv **conversion)
+int pf_parse_modifiers(t_data *data, t_conv *conv)
 {
-    static t_specifier flags[] = {
-        { PRINTF_FLAG_IS_A_CHARACTER, "#",        printf_flag_hash     },
-        { PRINTF_FLAG_IS_A_CHARACTER, "-",        printf_flag_minus    },
-        { PRINTF_FLAG_IS_A_CHARACTER, "+",        printf_flag_plus     },
-        { PRINTF_FLAG_IS_A_CHARACTER, " ",        printf_flag_space    },
-        { PRINTF_FLAG_IS_A_CHARACTER, "0",        printf_flag_zero     },
-        { PRINTF_FLAG_IS_A_CHARACTER, "*",        printf_flag_star     },
-        { PRINTF_FLAG_IS_A_CHARACTER, ".",        printf_flag_dot      },
-        { PRINTF_FLAG_IS_A_FUNCTION,  ft_isdigit, printf_flag_is_digit },
-        { PRINTF_FLAG_IS_A_CHARACTER, "h",        printf_length_h      },
-        { PRINTF_FLAG_IS_A_CHARACTER, "l",        printf_length_l      },
-        { PRINTF_FLAG_IS_A_CHARACTER, "j",        printf_length_j      },
-        { PRINTF_FLAG_IS_A_CHARACTER, "z",        printf_length_z      },
-        { PRINTF_FLAG_IS_A_CHARACTER, "$",        printf_conv_position },
+    static t_modif_hdlr flags[] = {
+        { PRINTF_FLAG_IS_A_CHARACTER, "#",        printf_flag_hash      },
+        { PRINTF_FLAG_IS_A_CHARACTER, "-",        printf_flag_minus     },
+        { PRINTF_FLAG_IS_A_CHARACTER, "+",        printf_flag_plus      },
+        { PRINTF_FLAG_IS_A_CHARACTER, " ",        printf_flag_space     },
+        { PRINTF_FLAG_IS_A_CHARACTER, "0",        printf_flag_zero      },
+        { PRINTF_FLAG_IS_A_CHARACTER, "*",        printf_flag_star      },
+        { PRINTF_FLAG_IS_A_CHARACTER, ".",        printf_flag_dot       },
+        { PRINTF_FLAG_IS_A_FUNCTION,  ft_isdigit, printf_flag_is_digit  },
+        { PRINTF_FLAG_IS_A_CHARACTER, "h",        printf_length_h       },
+        { PRINTF_FLAG_IS_A_CHARACTER, "l",        printf_length_l       },
+        { PRINTF_FLAG_IS_A_CHARACTER, "j",        printf_length_j       },
+        { PRINTF_FLAG_IS_A_CHARACTER, "z",        printf_length_z       },
+        { PRINTF_FLAG_IS_A_CHARACTER, "$",        printf_param_position },
     };
     size_t iter = 0;
     int    ret  = 0;
@@ -239,7 +209,8 @@ int pf_parse_conversion_modifiers(t_data *data, t_conv **conversion)
                 || (flags[iter].identity == PRINTF_FLAG_IS_A_FUNCTION
                     && ((t_fnc_ptr *) flags[iter].identifier)(*data->head) != 0))
             {
-                ret = flags[iter].handler(data, conversion);
+                ret = flags[iter].handler(data, conv);
+                data->head++;
                 break;
             }
             iter++;

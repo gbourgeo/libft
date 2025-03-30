@@ -15,33 +15,31 @@
 
 int pf_routine(t_data *data)
 {
-    t_conv *conversion = NULL;
-    ssize_t wrote      = 0;
+    t_conv conversion;
 
     while (*data->head != '\0')
     {
         if (*data->head == '%')
         {
-            conversion = pf_data_get_next_conversion(data, data->head, data->head);
-            if (conversion == NULL)
+            data->wrote += pf_output_string(data, data->tail, data->head - data->tail);
+            pf_conversion_init(&conversion, data->head);
+            if (pf_parse_modifiers(data, &conversion) == 0)
             {
-                return (-1);
-            }
-            if (pf_parse_conversion_modifiers(data, &conversion) == 0)
-            {
-                if (pf_parse_conversion_specifiers(data, conversion) != 0)
-                {
-                    return (-1);
+                if (*data->head != '\0'
+                    && pf_parse_specifiers(data, &conversion) != 0)
+                    {
+                        return (-1);
+                    }
+                    data->wrote += pf_output_conversion(data, &conversion);
+                    #ifdef PRINTF_DEBUG
+                    pf_parameter_table_debug(&data->parameters);
+                    pf_conversion_debug(&conversion);
+                    #endif
                 }
-                conversion->type = PRINTF_CONV_CONVERTER;
-                conversion->head = data->head + 1;
-            }
+            data->tail = data->head + 1;
         }
-        if (*data->head != '\0')
-        {
-            data->head++;
-        }
+        data->head += (*data->head != '\0') ? 1 : 0;
     }
-    wrote = pf_output(data);
-    return (int) (wrote);
+    data->wrote += pf_output_string(data, data->tail, data->head - data->tail);
+    return (int) (data->wrote);
 }

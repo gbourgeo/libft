@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pf_conversion_parser.c                             :+:      :+:    :+:   */
+/*   pf_specifiers_parser.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -14,37 +14,45 @@
 #include "ft_constants.h"
 #include "ft_routine_printf.h"
 
-int pf_parse_conversion_specifiers(t_data *data, t_conv *conversion)
+int pf_parse_specifiers(t_data *data, t_conv *conv)
 {
-    static t_converter converters[] = {
-        { 'c', pf_c_small }, { 'C', pf_c_big   },
-        { 'd', pf_di      }, { 'D', pf_di      },
-        { 'o', pf_o       }, { 'O', pf_o       },
-        { 's', pf_s_small }, { 'S', pf_s_big   },
-        { 'u', pf_u       }, { 'U', pf_u       },
-        { 'x', pf_x_small }, { 'X', pf_x_big   },
-        { 'p', pf_p       },
+    static t_spec_hdlr converters[] = {
+        { 'c', pf_c_small },
+        { 'C', pf_c_big   },
+        { 'd', pf_di      },
+        { 'D', pf_di      },
+        { 'o', pf_o       },
+        { 'O', pf_o       },
+        { 's', pf_s_small },
+        { 'S', pf_s_big   },
+        { 'u', pf_u       },
+        { 'U', pf_u       },
+        { 'x', pf_x       },
+        { 'X', pf_x       },
         { 'i', pf_di      },
-        { '%', pf_percent },
+        { 'n', pf_n       },
+        { 'p', pf_p       },
     };
-    size_t iter = 0;
+    t_param *param = NULL;
+    size_t   iter  = 0;
 
     while (iter < LENGTH_OF(converters))
     {
         if (converters[iter].character == *data->head)
         {
-            pf_conv_merge_modifiers(data, conversion);
-            if (converters[iter].handler(data, conversion) == -1)
+            param = pf_parameter_new(&data->parameters);
+            if (converters[iter].handler(data, param, conv) == -1)
             {
                 pf_data_clean(data);
                 return (-1);
             }
-            conversion->converted[conversion->pos] = '\0';
+            param->status = PRINTF_PARAMETER_RECOVERED;
+            conv->head    = data->head + 1;
             return (0);
         }
         iter++;
     }
-    /* Converteur non géré */
-    data->head--;
+    pf_unhandled(data, conv);
+    conv->head = data->head + 1;
     return (0);
 }

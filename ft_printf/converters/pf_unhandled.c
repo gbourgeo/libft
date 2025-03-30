@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pf_percent.c                                       :+:      :+:    :+:   */
+/*   pf_unhandled.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbourgeo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,22 +11,23 @@
 /* ************************************************************************** */
 
 #include "ft_base_printf.h"
-#include "ft_constants.h"
 #include <stdlib.h>
 
-ssize_t pf_percent(t_data _unused *data, t_conv *conversion)
+ssize_t pf_unhandled(t_data *data, t_conv *conversion)
 {
-    ssize_t zeros  = 0;
-    ssize_t spaces = 0;
+    t_param parameter = {};
+    ssize_t zeros     = 0;
+    ssize_t spaces    = 0;
 
-    conversion->result = '%';
-    compute_zeros_and_spaces(conversion, 1, 0, &zeros, &spaces);
-    // New result allocation
-    if (pf_conv_new_result(conversion, 1 + zeros + spaces) != 0)
+    compute_zeros_and_spaces(&parameter, conversion, 1, 0, &zeros, &spaces);
+    // Value allocation
+    conversion->len   = 1 + zeros + spaces + 2;
+    conversion->value = (char *) malloc(conversion->len);
+    if (conversion->value == NULL)
     {
         return (-1);
     }
-    pre_write_modifiers(conversion, zeros, spaces, "%", 1, NULL);
-    post_write_modifiers(conversion, zeros, spaces, "%", 1, NULL);
+    pre_convert_specifiers(&parameter, conversion, zeros, spaces, data->head, 1, NULL);
+    post_convert_specifiers(&parameter, conversion, zeros, spaces, data->head, 1, NULL);
     return (0);
 }

@@ -20,7 +20,7 @@ void pf_conv_nwrite_char(t_conv *conversion, uint8_t chr, ssize_t ntimes)
         while (conversion->pos < conversion->len
                && ntimes > 0)
         {
-            conversion->converted[conversion->pos] = (char) chr;
+            conversion->value[conversion->pos] = (char) chr;
             conversion->pos++;
             ntimes--;
         }
@@ -32,7 +32,7 @@ void pf_conv_nwrite_char_unverified(t_conv *conversion, uint8_t chr, ssize_t nti
     while (conversion->pos < conversion->len
            && ntimes > 0)
     {
-        conversion->converted[conversion->pos] = (char) chr;
+        conversion->value[conversion->pos] = (char) chr;
         conversion->pos++;
         ntimes--;
     }
@@ -46,7 +46,7 @@ void pf_conv_nwrite_str(t_conv *conversion, const char *str, ssize_t len)
                && *str != '\0'
                && len > 0)
         {
-            conversion->converted[conversion->pos] = *str;
+            conversion->value[conversion->pos] = *str;
             conversion->pos++;
             str++;
             len--;
@@ -60,7 +60,7 @@ void pf_conv_write_wchar(t_conv *conversion, wchar_t src)
 
     if (code < 0x80)
     {
-        conversion->converted[conversion->pos++] = (char) code;
+        conversion->value[conversion->pos++] = (char) code;
     }
     else if (code < 0x800) // 00000yyy yyxxxxxx
     {
@@ -70,8 +70,8 @@ void pf_conv_write_wchar(t_conv *conversion, wchar_t src)
         }
         else
         {
-            conversion->converted[conversion->pos++] = (char) ((uint32_t) 0b11000000 | (code >> (uint32_t) 6));
-            conversion->converted[conversion->pos++] = (char) ((uint32_t) 0b10000000 | (code & (uint32_t) 0x3f));
+            conversion->value[conversion->pos++] = (char) ((uint32_t) 0b11000000 | (code >> (uint32_t) 6));
+            conversion->value[conversion->pos++] = (char) ((uint32_t) 0b10000000 | (code & (uint32_t) 0x3f));
         }
     }
     else if (code < 0x10000) // zzzzyyyy yyxxxxxx
@@ -82,9 +82,9 @@ void pf_conv_write_wchar(t_conv *conversion, wchar_t src)
         }
         else
         {
-            conversion->converted[conversion->pos++] = (char) ((uint32_t) 0b11100000 | (code >> (uint32_t) 12));                    // 1110zzz
-            conversion->converted[conversion->pos++] = (char) ((uint32_t) 0b10000000 | ((code >> (uint32_t) 6) & (uint32_t) 0x3f)); // 10yyyyy
-            conversion->converted[conversion->pos++] = (char) ((uint32_t) 0b10000000 | (code & (uint32_t) 0x3f));                   // 10xxxxx
+            conversion->value[conversion->pos++] = (char) ((uint32_t) 0b11100000 | (code >> (uint32_t) 12));                    // 1110zzz
+            conversion->value[conversion->pos++] = (char) ((uint32_t) 0b10000000 | ((code >> (uint32_t) 6) & (uint32_t) 0x3f)); // 10yyyyy
+            conversion->value[conversion->pos++] = (char) ((uint32_t) 0b10000000 | (code & (uint32_t) 0x3f));                   // 10xxxxx
         }
     }
     else if (code < 0x200000) // 000uuuuu zzzzyyyy yyxxxxxx
@@ -95,10 +95,10 @@ void pf_conv_write_wchar(t_conv *conversion, wchar_t src)
         }
         else
         {
-            conversion->converted[conversion->pos++] = (char) ((uint32_t) 0b11110000 | (code >> (uint32_t) 18));                     // 11110uuu
-            conversion->converted[conversion->pos++] = (char) ((uint32_t) 0b10000000 | ((code >> (uint32_t) 12) & (uint32_t) 0x3f)); // 10uuzzzz
-            conversion->converted[conversion->pos++] = (char) ((uint32_t) 0b10000000 | ((code >> (uint32_t) 6) & (uint32_t) 0x3f));  // 10yyyyyy
-            conversion->converted[conversion->pos++] = (char) ((uint32_t) 0b10000000 | (code & (uint32_t) 0x3f));                    // 10xxxxxx
+            conversion->value[conversion->pos++] = (char) ((uint32_t) 0b11110000 | (code >> (uint32_t) 18));                     // 11110uuu
+            conversion->value[conversion->pos++] = (char) ((uint32_t) 0b10000000 | ((code >> (uint32_t) 12) & (uint32_t) 0x3f)); // 10uuzzzz
+            conversion->value[conversion->pos++] = (char) ((uint32_t) 0b10000000 | ((code >> (uint32_t) 6) & (uint32_t) 0x3f));  // 10yyyyyy
+            conversion->value[conversion->pos++] = (char) ((uint32_t) 0b10000000 | (code & (uint32_t) 0x3f));                    // 10xxxxxx
         }
     }
     else

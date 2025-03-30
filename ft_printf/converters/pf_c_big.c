@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pf_c_small.c                                       :+:      :+:    :+:   */
+/*   pf_c_big.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,26 +13,37 @@
 #include "ft_base_printf.h"
 #include "ft_constants.h"
 #include "ft_routine_printf.h"
+#include <stdlib.h>
 #include <wchar.h>
 
-static unsigned long long get_modifier(t_data *data, t_conv *conversion)
+static void get_parameter_value(t_data *data, t_param *parameter)
 {
-    return (conversion->type == PRINTF_CONV_NONE) ?
-        va_arg(data->ap, int) :
-        (int) (conversion->result);
+    if (parameter->status == PRINTF_PARAMETER_NOT_RECOVERED)
+    {
+        parameter->value  = va_arg(data->ap, int);
+        parameter->status = PRINTF_PARAMETER_RECOVERED;
+    }
+    else
+    {
+        parameter->value = (int) parameter->value;
+    }
 }
 
-ssize_t pf_c_small(t_data *data, t_conv *conversion)
+ssize_t pf_c_big(t_data *data, t_param *parameter, t_conv *conversion)
 {
-    conversion->result = get_modifier(data, conversion);
-    ssize_t min_width  = 0;
+    ssize_t min_width = 0;
 
+    // Recover parameter
+    get_parameter_value(data, parameter);
+    // Conversion minimum width
     if (conversion->flags.min_width > 0)
     {
         min_width = conversion->flags.min_width - 1;
     }
-    // New result allocation
-    if (pf_conv_new_result(conversion, (long) (sizeof(int) + min_width)) != 0)
+    // Value allocation
+    conversion->len   = pf_wcharlen((int) parameter->value) + min_width;
+    conversion->value = (char *) malloc(conversion->len);
+    if (conversion->value == NULL)
     {
         return (-1);
     }
@@ -43,14 +54,7 @@ ssize_t pf_c_small(t_data *data, t_conv *conversion)
                             (TEST_BIT(conversion->flags.bits, PRINTF_FLAG_ZERO)) ? '0' : ' ',
                             min_width);
     }
-    if (conversion->flags.bits >> 7 != 0 && conversion->result > 127)
-    {
-        pf_conv_write_wchar(conversion, (wchar_t) conversion->result);
-    }
-    else
-    {
-        pf_conv_nwrite_char_unverified(conversion, conversion->result, 1);
-    }
+    pf_conv_write_wchar(conversion, (wchar_t) parameter->value);
     // Post minimum width write
     if (TEST_BIT(conversion->flags.bits, PRINTF_FLAG_MINUS))
     {

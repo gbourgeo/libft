@@ -13,9 +13,18 @@
 #include "ft_base_printf.h"
 #include "ft_constants.h"
 #include "ft_routine_printf.h"
-#include "libft.h"
 #include <stddef.h>
+#include <stdlib.h>
 #include <wchar.h>
+
+static void get_parameter_value(t_data *data, t_param *parameter)
+{
+    if (parameter->status == PRINTF_PARAMETER_NOT_RECOVERED)
+    {
+        parameter->value  = (unsigned long long) va_arg(data->ap, const wchar_t *);
+        parameter->status = PRINTF_PARAMETER_RECOVERED;
+    }
+}
 
 static long get_precision_length(ssize_t max_len, const wchar_t *src)
 {
@@ -34,18 +43,16 @@ static long get_precision_length(ssize_t max_len, const wchar_t *src)
     return wlen;
 }
 
-ssize_t pf_s_big(t_data *data, t_conv *conversion)
+ssize_t pf_s_big(t_data *data, t_param *parameter, t_conv *conversion)
 {
-    const wchar_t *ptr       = (conversion->type == PRINTF_CONV_NONE) ?
-              va_arg(data->ap, const wchar_t *) :
-              (const wchar_t *) conversion->result;
+    const wchar_t *ptr       = NULL;
     ssize_t        len       = 0;
     ssize_t        min_width = 0;
 
-    if (ptr == NULL)
-    {
-        ptr = L"(null)";
-    }
+    get_parameter_value(data, parameter);
+    ptr = (parameter->value != 0) ?
+        (const wchar_t *) parameter->value :
+        L"(null)";
     len = pf_wstrlen(ptr);
     // Precision
     if (TEST_BIT(conversion->flags.bits, PRINTF_FLAG_DOT)
@@ -54,11 +61,13 @@ ssize_t pf_s_big(t_data *data, t_conv *conversion)
         len = get_precision_length(conversion->flags.precision, ptr);
     }
     // Minimum width
-    min_width = (conversion->flags.min_width > len) ?
-        conversion->flags.min_width - len :
-        0;
-    // New result allocation
-    if (pf_conv_new_result(conversion, len + min_width) != 0)
+    min_width         = (conversion->flags.min_width > len) ?
+                conversion->flags.min_width - len :
+                0;
+    // Value allocation
+    conversion->len   = len + min_width;
+    conversion->value = (char *) malloc(conversion->len);
+    if (conversion->value == NULL)
     {
         return (-1);
     }
@@ -69,13 +78,12 @@ ssize_t pf_s_big(t_data *data, t_conv *conversion)
                             (TEST_BIT(conversion->flags.bits, PRINTF_FLAG_ZERO)) ? '0' : ' ',
                             min_width);
     }
-    // Write result
+    // Write value
     pf_conv_nwrite_wstr(conversion, ptr, len);
     // Post minimum width write
     if (TEST_BIT(conversion->flags.bits, PRINTF_FLAG_MINUS))
     {
         pf_conv_nwrite_char(conversion, ' ', min_width);
     }
-    conversion->result = (unsigned long long) ptr;
     return (0);
 }

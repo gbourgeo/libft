@@ -25,6 +25,10 @@
 #  define _unused __attribute__((__unused__))
 # endif
 
+# ifndef _packed
+#  define _packed __attribute__((packed))
+# endif
+
 # ifndef LENGTH_OF
 #  define LENGTH_OF(table) (sizeof(table) / sizeof((table)[0]))
 # endif
@@ -38,7 +42,7 @@
 # endif
 
 # ifndef REMOVE_BIT
-#  define REMOVE_BIT(storage, bit) ((storage) &= ~(bit))
+#  define REMOVE_BIT(storage, bit) ((storage) &= ~(unsigned int)(bit))
 # endif
 
 # endif /* FT_CONSTANTS_H */

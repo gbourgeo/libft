@@ -51,31 +51,29 @@ enum
  *
  * - char : Caractère de conversion
  *
- * - ssize_t (*)(t_data *, T_conv *) : Gestionnaire du caractère
+ * - ssize_t (*)(t_data *, t_conv *) : Fonction de gestion du caractère
  */
-typedef struct _align(16) s_conversion_specification_handler
+typedef struct _align(16) s_specifier_handler
 {
-    char    character;                      // Caractère reconnu comme conversion
-    ssize_t (*handler)(t_data *, t_conv *); // Fonction de gestion du caractère
-} t_converter;
+    char    character;                                 // Caractère reconnu comme conversion
+    ssize_t (*handler)(t_data *, t_param *, t_conv *); // Fonction de gestion du caractère
+} t_spec_hdlr;
 
 /**
  * @brief Structure des spécificateurs supportés. Contient:
  *
- * - t_identifier   : Identité (caractère ou fonction)
+ * - t_identifier                 : Identité (caractère ou fonction)
  *
- * - void *         : Valeur
+ * - void *                       : Valeur
  *
- * - int            : Bit d'identité
- *
- * - t_conv *(*)()  : Gestionnaire du spécficateur
+ * - int (*)(t_data *, t_conv *)  : Fonction de gestion du spécficateur
  */
-typedef struct _align(32) s_conversion_specifier_handler
+typedef struct _align(32) s_modifier_handler
 {
-    t_fidentifier identity;                        // Type de spécificateur
-    void         *identifier;                      // Nom/Fonction du spécificateur (#, -, +, *, etc.)
-    int           (*handler)(t_data *, t_conv **); // Fonction de gestion de l'identifieur
-} t_specifier;
+    t_fidentifier identity;                       // Type de spécificateur
+    void         *identifier;                     // Nom/Fonction du spécificateur (#, -, +, *, etc.)
+    int           (*handler)(t_data *, t_conv *); // Fonction de gestion de l'identifieur
+} t_modif_hdlr;
 
 typedef int t_fnc_ptr(int);
 

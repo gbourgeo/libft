@@ -43,26 +43,28 @@ SPRINTF_SRC = ft_sprintf.c
 SNPRINTF_SRC = ft_snprintf.c
 VPRINTF_SRC = ft_vprintf.c
 VDPRINTF_SRC = ft_vdprintf.c
-PRINTF_BASE = pf_c_big.c           	\
-			pf_c_small.c           	\
-			pf_conversion_parser.c 	\
-			pf_conversion_writers.c \
-			pf_conversion.c        	\
-			pf_data.c              	\
-			pf_di.c                	\
-			pf_modifiers_parser.c  	\
-			pf_modifiers_writers.c 	\
-			pf_o.c                 	\
-			pf_output.c            	\
-			pf_p.c                 	\
-			pf_percent.c           	\
-			pf_routine.c           	\
-			pf_s_big.c             	\
-			pf_s_small.c           	\
-			pf_u.c                 	\
-			pf_x_big.c             	\
-			pf_x_small.c			\
+PRINTF_BASE = pf_conversion_specifiers.c \
+			pf_conversion_writers.c      \
+			pf_conversion.c              \
+			pf_data.c                    \
+			pf_modifiers_parser.c        \
+			pf_output.c                  \
+			pf_parameter_table.c         \
+			pf_routine.c                 \
+			pf_specifiers_parser.c       \
 			pf_wide_char.c
+PRINTF_CONVERTERS_DIR = converters/
+PRINTF_CONVERTERS = pf_c_big.c      \
+			pf_c_small.c            \
+			pf_di.c                 \
+			pf_n.c                  \
+			pf_o.c                  \
+			pf_p.c                  \
+			pf_s_big.c              \
+			pf_s_small.c            \
+			pf_u.c                  \
+			pf_unhandled.c          \
+			pf_x.c
 
 
 UNIT_TESTS_DIR = unit_test/
@@ -72,6 +74,7 @@ OBJ_DIR = obj/
 OBJ_SRC	= $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 OBJ_SRC += $(addprefix $(OBJ_DIR), $(PRINTF_SRC:.c=.o))
 OBJ_SRC += $(addprefix $(OBJ_DIR), $(PRINTF_BASE:.c=.o))
+OBJ_SRC += $(addprefix $(OBJ_DIR), $(PRINTF_CONVERTERS:.c=.o))
 OBJ_SRC += $(addprefix $(OBJ_DIR), $(FPRINTF_SRC:.c=.o))
 OBJ_SRC += $(addprefix $(OBJ_DIR), $(DPRINTF_SRC:.c=.o))
 OBJ_SRC += $(addprefix $(OBJ_DIR), $(SPRINTF_SRC:.c=.o))
@@ -105,6 +108,10 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	$(CC) $(CFLAGS) -MMD -o $@ -c $< $(INCLUDES) $(ENV)
 
 $(OBJ_DIR)%.o: $(PRINTF_DIR)%.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -MMD -o $@ -c $< $(INCLUDES) $(ENV)
+
+$(OBJ_DIR)%.o: $(PRINTF_DIR)$(PRINTF_CONVERTERS_DIR)%.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -MMD -o $@ -c $< $(INCLUDES) $(ENV)
 
