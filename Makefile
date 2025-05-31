@@ -1,13 +1,13 @@
 # **************************************************************************** #
-#																			   #
-#														 :::	  ::::::::	   #
-#	Makefile										   :+:	  :+:	:+:		   #
-#													 +:+ +:+		 +:+	   #
-#	By: gbourgeo <gbourgeo@student.42.fr>		  +#+  +:+	   +#+			   #
-#												 +#+#+#+#+#+   +#+			   #
-#	Created: 2013/11/20 18:41:05 by gbourgeo		  #+#	#+#				   #
-#	Updated: 2020/11/18 20:05:42 by gbourgeo		 ###   ########.fr		   #
-#																			   #
+#                                                                              #
+#                                                        :::   ::::::::        #
+#   Makefile                                           :+:    :+:   :+:        #
+#                                                    +:+ +:+         +:+       #
+#   By: gbourgeo <gbourgeo@student.42.fr>        +#+  +:+      +#+             #
+#                                                +#+#+#+#+#+   +#+             #
+#   Created: 2013/11/20 18:41:05 by gbourgeo          #+#   #+#                #
+#   Updated: 2020/11/18 20:05:42 by gbourgeo         ###   ########.fr         #
+#                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
@@ -71,7 +71,7 @@ UNIT_TESTS_DIR = unit_test/
 UNIT_TEST_SRC = main.c
 
 OBJ_DIR = obj/
-OBJ_SRC	= $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
+OBJ_SRC	 = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 OBJ_SRC += $(addprefix $(OBJ_DIR), $(PRINTF_SRC:.c=.o))
 OBJ_SRC += $(addprefix $(OBJ_DIR), $(PRINTF_BASE:.c=.o))
 OBJ_SRC += $(addprefix $(OBJ_DIR), $(PRINTF_CONVERTERS:.c=.o))
@@ -87,40 +87,47 @@ DEPENDS = $(OBJ_SRC:.o=.d)
 
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
-
-INCLUDE_DIR = includes/
 INCLUDES = -I $(INCLUDE_DIR)
 
-.PHONY: clean fclean re test debug
+INCLUDE_DIR = includes/
 
-all: $(NAME)
+.PHONY: start clean fclean re test debug end
+
+all: start $(NAME) end
+
+start:
+	@/bin/echo -n '[LIBFT] Compilation '
+	@mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJ_SRC) $(OBJ_PRINTF)
 	@ar rc $@ $^
 	@ranlib $@
-	@echo "Created: $(NAME)"
 
 # Include all .d files
 -include $(DEPENDS)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -MMD -o $@ -c $< $(INCLUDES) $(ENV)
+	@/bin/echo -n "."
 
 $(OBJ_DIR)%.o: $(PRINTF_DIR)%.c
-	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -MMD -o $@ -c $< $(INCLUDES) $(ENV)
+	@/bin/echo -n "."
 
 $(OBJ_DIR)%.o: $(PRINTF_DIR)$(PRINTF_CONVERTERS_DIR)%.c
-	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -MMD -o $@ -c $< $(INCLUDES) $(ENV)
+	@/bin/echo -n "."
+
+end:
+	@/bin/echo " $(NAME)"
 
 clean:
-	@if test -d $(OBJ_DIR) ; then rm -rf $(OBJ_DIR) ; echo Libft .o erased. ; fi
+	@/bin/rm -rf $(OBJ_DIR)
+	@/bin/echo "[LIBFT] Objects erased."
 
 fclean: clean
-	@if test -f $(NAME) ; then rm -f $(NAME) ; echo libft $(NAME) erased. ; fi
-	@rm -f ./test
+	@/bin/rm -f $(NAME) ./test
+	@/bin/echo "[LIBFT] Librairy erased."
 
 re: fclean all
 
