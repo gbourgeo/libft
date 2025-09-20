@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libft.a
+NAME = libft
 
 SRC_DIR = srcs/
 SRC = ft_atoi.c ft_atol_base.c ft_atol.c ft_itoa_base.c ft_itoa.c             \
@@ -22,7 +22,8 @@ SRC = ft_atoi.c ft_atol_base.c ft_atol.c ft_itoa_base.c ft_itoa.c             \
 	ft_strnequ.c ft_strsub.c ft_strjoin.c ft_strtrim.c ft_strsplit.c          \
 	ft_split.c ft_split_whitespaces.c ft_str2join.c ft_strcdup.c              \
 	ft_strcharset.c ft_stricpy.c ft_strndup.c ft_strrcdup.c ft_freestr.c      \
-	ft_freetab.c ft_split_whitespaces.c ft_strtoupper.c ft_wstrlen.c          \
+	ft_freetab.c ft_split_whitespaces.c ft_strtoupper.c ft_ufreestr.c         \
+	ft_ustrcmp.c ft_ustrdup.c ft_ustrlen.c ft_wstrlen.c                       \
 	get_next_line.c                                                           \
 	ft_tabdup.c ft_tablen.c ft_tabdel.c                                       \
 	ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c          \
@@ -85,23 +86,26 @@ OBJ_UNIT_TEST = $(addprefix $(OBJ_DIR), $(UNIT_TEST_SRC:.c=.o))
 
 DEPENDS = $(OBJ_SRC:.o=.d)
 
-CC = gcc
+CC = clang
 CFLAGS = -Wall -Werror -Wextra
 INCLUDES = -I $(INCLUDE_DIR)
 
 INCLUDE_DIR = includes/
 
-.PHONY: start clean fclean re test debug end
+.PHONY: start end clean fclean re test debug
 
 all: start $(NAME) end
 
+.PHONY: start
 start:
-	@/bin/echo -n '[LIBFT] Compilation '
 	@mkdir -p $(OBJ_DIR)
+	@/bin/echo "[$(NAME)] Flags: $(CFLAGS)"
+	@/bin/echo -n "[$(NAME)] Compiling "
 
+.PHONY: $(NAME)
 $(NAME): $(OBJ_SRC) $(OBJ_PRINTF)
-	@ar rc $@ $^
-	@ranlib $@
+	@ar rc $@.a $^
+	@ranlib $@.a
 
 # Include all .d files
 -include $(DEPENDS)
@@ -118,25 +122,31 @@ $(OBJ_DIR)%.o: $(PRINTF_DIR)$(PRINTF_CONVERTERS_DIR)%.c
 	$(CC) $(CFLAGS) -MMD -o $@ -c $< $(INCLUDES) $(ENV)
 	@/bin/echo -n "."
 
+.PHONY: end
 end:
-	@/bin/echo " $(NAME)"
+	@echo ""
 
+.PHONY: clean
 clean:
 	@/bin/rm -rf $(OBJ_DIR)
-	@/bin/echo "[LIBFT] Objects erased."
+	@/bin/echo "[$(NAME)] Objects erased."
 
+.PHONY: fclean
 fclean: clean
 	@/bin/rm -f $(NAME) ./test
-	@/bin/echo "[LIBFT] Librairy erased."
+	@/bin/echo "[$(NAME)] Librairy erased."
 
+.PHONY: re
 re: fclean all
 
 $(OBJ_DIR)%.o: $(UNIT_TESTS_DIR)%.c
 	$(CC) -o $@ -c $< $(INCLUDES)
 
+.PHONY: test
 test: all $(OBJ_UNIT_TEST)
 	$(CC) $(CFLAGS) -o $@ $(OBJ_UNIT_TEST) -L. -lft
 
+.PHONY: debug
 debug: ENV = -DPRINTF_DEBUG
 debug: CFLAGS += -g -O0
 debug: re

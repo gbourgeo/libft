@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "ft_base_printf.h"
+#include <stddef.h>
+#include <stdint.h>
 #include <wchar.h>
 
 void pf_conv_nwrite_char(t_conv *conversion, uint8_t chr, ssize_t ntimes)

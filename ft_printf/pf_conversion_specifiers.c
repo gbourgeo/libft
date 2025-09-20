@@ -11,10 +11,9 @@
 /* ************************************************************************** */
 
 #include "ft_base_printf.h"
-#include "ft_constants.h"
+#include "ft_defines.h"
 #include "ft_routine_printf.h"
 #include "libft.h"
-#include <stddef.h>
 
 void compute_zeros_and_spaces(
     t_param *parameter,

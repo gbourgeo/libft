@@ -12,29 +12,30 @@
 
 #include "libft.h"
 
-long		ft_atol(const char *str)
+long ft_atol(const char *str)
 {
-	long	i;
-	long	res;
-	long	isneg;
+    long iter  = 0;
+    long res   = 0;
+    long isneg = 1;
 
-	i = 0;
-	res = 0;
-	isneg = 1;
-	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' || str[i] == '\v'
-			|| str[i] == '\f' || str[i] == '\r')
-		i++;
-	if (str[i] == '-')
-	{
-		isneg = -1;
-		i++;
-	}
-	else if (str[i] == '+')
-		i++;
-	while (str[i] && ft_isdigit(str[i]))
-	{
-		res = res * 10;
-		res = res + str[i++] - '0';
-	}
-	return (res * isneg);
+    while (str[iter] == ' ' || str[iter] == '\n' || str[iter] == '\t'
+           || str[iter] == '\v' || str[iter] == '\f' || str[iter] == '\r')
+    {
+        iter++;
+    }
+    if (str[iter] == '-')
+    {
+        isneg = -1;
+        iter++;
+    }
+    else if (str[iter] == '+')
+    {
+        iter++;
+    }
+    while (str[iter] != '\0' && ft_isdigit(str[iter]) != 0)
+    {
+        res = res * 10;
+        res = res + str[iter++] - '0';
+    }
+    return (res * isneg);
 }

@@ -10,18 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stddef.h>
 #include <stdlib.h>
 
-void	*ft_memalloc(size_t size)
+void *ft_memalloc(size_t size)
 {
-	char	*p;
-	size_t	i;
+    char  *ptr  = NULL;
+    size_t iter = 0;
 
-	i = 0;
-	if ((p = (char*)malloc(sizeof(*p) * size)) == NULL)
-		return (NULL);
-	else
-		while (i < size)
-			p[i++] = 0;
-	return (void*)(p);
+    ptr = (char *) malloc(size);
+    if (ptr == NULL)
+    {
+        return (NULL);
+    }
+    while (iter < size)
+    {
+        ptr[iter++] = 0;
+    }
+    return (void *) (ptr);
 }

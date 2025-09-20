@@ -11,8 +11,9 @@
 /* ************************************************************************** */
 
 #include "ft_base_printf.h"
-#include "ft_constants.h"
+#include "ft_defines.h"
 #include "ft_routine_printf.h"
+#include <stdarg.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <wchar.h>
@@ -61,9 +62,9 @@ ssize_t pf_s_big(t_data *data, t_param *parameter, t_conv *conversion)
         len = get_precision_length(conversion->flags.precision, ptr);
     }
     // Minimum width
-    min_width         = (conversion->flags.min_width > len) ?
-                conversion->flags.min_width - len :
-                0;
+    min_width = (conversion->flags.min_width > len) ?
+        conversion->flags.min_width - len :
+        0;
     // Value allocation
     conversion->len   = len + min_width;
     conversion->value = (char *) malloc(conversion->len);

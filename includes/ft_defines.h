@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_constants.h                                     :+:      :+:    :+:   */
+/*   ft_defines.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,39 +10,43 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_CONSTANTS_H
-# define FT_CONSTANTS_H
+#ifndef _FT_DEFINES_H_
+#define _FT_DEFINES_H_
 
-# ifndef _pack
+#ifndef _pack
 # define _pack __attribute__((packed))
-# endif
+#endif
 
-# ifndef _align
-#  define _align(size) __attribute__((aligned(size)))
-# endif
+#ifndef _align
+# define _align(size) __attribute__((aligned(size)))
+#endif
 
-# ifndef _unused
-#  define _unused __attribute__((__unused__))
-# endif
+#ifndef _unused
+# define _unused __attribute__((__unused__))
+#endif
 
-# ifndef _packed
-#  define _packed __attribute__((packed))
-# endif
+#ifndef LENGTH_OF
+# define LENGTH_OF(table) (sizeof(table) / sizeof((table)[0]))
+#endif
 
-# ifndef LENGTH_OF
-#  define LENGTH_OF(table) (sizeof(table) / sizeof((table)[0]))
-# endif
+#ifndef TEST_BIT
+# define TEST_BIT(storage, bit) ((storage) & (unsigned int) (bit))
+#endif
 
-# ifndef TEST_BIT
-#  define TEST_BIT(storage, bit) ((storage) & (unsigned int)(bit))
-# endif
+#ifndef ASSIGN_BIT
+# define ASSIGN_BIT(storage, bit) ((storage) |= (unsigned int) (bit))
+#endif
 
-# ifndef ASSIGN_BIT
-#  define ASSIGN_BIT(storage, bit) ((storage) |= (unsigned int)(bit))
-# endif
+#ifndef REMOVE_BIT
+# define REMOVE_BIT(storage, bit) ((storage) &= ~(unsigned int) (bit))
+#endif
 
-# ifndef REMOVE_BIT
-#  define REMOVE_BIT(storage, bit) ((storage) &= ~(unsigned int)(bit))
-# endif
+#ifndef CLEAR_BIT
+# define CLEAR_BIT(storage) ((storage) &= ~(unsigned int) (0xff))
+#endif
 
-# endif /* FT_CONSTANTS_H */
+#ifndef UINT32
+# define UINT32(val) ((uint32_t) (val))
+#endif
+
+#endif /* _FT_DEFINES_H_ */

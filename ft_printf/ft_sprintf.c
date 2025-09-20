@@ -12,6 +12,7 @@
 
 #include "ft_sprintf.h"
 #include "ft_base_printf.h"
+#include <stdarg.h>
 #include <stddef.h>
 
 int ft_sprintf(char *str, const char * restrict format, ...)

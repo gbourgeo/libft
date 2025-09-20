@@ -12,6 +12,7 @@
 
 #include "ft_printf.h"
 #include "ft_base_printf.h"
+#include <stdarg.h>
 #include <unistd.h>
 
 int ft_printf(const char * restrict format, ...)

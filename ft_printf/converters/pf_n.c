@@ -11,10 +11,8 @@
 /* ************************************************************************** */
 
 #include "ft_base_printf.h"
-#include "ft_constants.h"
-#include "ft_routine_printf.h"
-#include "libft.h"
-#include <stddef.h>
+#include "ft_defines.h"
+#include <stdarg.h>
 #include <stdlib.h>
 
 ssize_t pf_n(t_data *data, t_param *parameter, t_conv _unused *conversion)

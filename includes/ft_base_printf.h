@@ -13,14 +13,18 @@
 #ifndef FT_BASE_PRINTF_H
 #define FT_BASE_PRINTF_H
 
-#include "ft_constants.h"
+#include "ft_defines.h"
 #include <inttypes.h>
-#include <stdarg.h>
+// #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#define PRELOAD_CONVERSION_NB 10
 #define PF_SIZEOF(type)       ((ssize_t) sizeof(type))
+
+enum
+{
+    PRELOAD_CONVERSION_NB = 10
+};
 
 typedef enum e_printf_output
 {

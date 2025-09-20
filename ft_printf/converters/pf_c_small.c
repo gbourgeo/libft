@@ -11,8 +11,11 @@
 /* ************************************************************************** */
 
 #include "ft_base_printf.h"
-#include "ft_constants.h"
+#include "ft_defines.h"
 #include "ft_routine_printf.h"
+#include <stdarg.h>
+#include <stddef.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <wchar.h>
 
@@ -54,7 +57,7 @@ ssize_t pf_c_small(t_data *data, t_param *parameter, t_conv *conversion)
                             (TEST_BIT(conversion->flags.bits, PRINTF_FLAG_ZERO)) ? '0' : ' ',
                             min_width);
     }
-    if (conversion->flags.bits >> 7 != 0 && parameter->value > 127)
+    if (conversion->flags.bits >> (uint8_t) 7 != 0 && parameter->value > 127)
     {
         pf_conv_write_wchar(conversion, (wchar_t) parameter->value);
     }

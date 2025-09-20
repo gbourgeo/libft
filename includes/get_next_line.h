@@ -13,7 +13,7 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include "ft_constants.h"
+# include "ft_defines.h"
 
 # define GNL_BUFF_SIZE 8
 

@@ -12,6 +12,7 @@
 
 #include "ft_snprintf.h"
 #include "ft_base_printf.h"
+#include <stdarg.h>
 #include <stddef.h>
 
 int ft_snprintf(char *str, size_t size,

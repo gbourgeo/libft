@@ -12,6 +12,7 @@
 
 #include "ft_fprintf.h"
 #include "ft_base_printf.h"
+#include <stdarg.h>
 
 int ft_fprintf(FILE *stream, const char * restrict format, ...)
 {

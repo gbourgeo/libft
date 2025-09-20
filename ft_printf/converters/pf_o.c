@@ -11,10 +11,10 @@
 /* ************************************************************************** */
 
 #include "ft_base_printf.h"
-#include "ft_constants.h"
+#include "ft_defines.h"
 #include "ft_routine_printf.h"
 #include "libft.h"
-#include <stddef.h>
+#include <stdarg.h>
 #include <stdlib.h>
 
 static char *get_parameter_value(
@@ -95,7 +95,7 @@ ssize_t pf_o(t_data *data, t_param *parameter, t_conv *conversion)
     prefix = get_prefix_value(parameter, conversion);
     len    = (ssize_t) ft_strlen(src);
     // Minimum width
-    compute_zeros_and_spaces(parameter, conversion, len, (prefix != NULL), &zeros, &spaces);
+    compute_zeros_and_spaces(parameter, conversion, len, prefix != NULL, &zeros, &spaces);
     // Special treatment
     if (TEST_BIT(conversion->flags.bits, PRINTF_FLAG_HASH)
         && TEST_BIT(conversion->flags.bits, PRINTF_FLAG_DOT))

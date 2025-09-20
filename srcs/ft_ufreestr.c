@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   ft_ufreestr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gbourgeo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2013/12/12 05:28:41 by gbourgeo          #+#    #+#             */
-/*   Updated: 2013/12/19 17:35:13 by gbourgeo         ###   ########.fr       */
+/*   Created: 2017/03/30 22:44:16 by gbourgeo          #+#    #+#             */
+/*   Updated: 2017/03/30 22:45:35 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <stddef.h>
 #include <stdlib.h>
 
-t_list		*ft_lstmap(t_list *lst, t_list *(*func)(t_list *))
+void ft_ufreestr(unsigned char **str)
 {
-	t_list	*so_fresh = NULL;
-
-	so_fresh = func(lst);
-	if (lst->next != NULL)
-	{
-		so_fresh->next = ft_lstmap(lst->next, func);
-	}
-	return (so_fresh);
+    if (str != NULL)
+    {
+        free(*str);
+        *str = NULL;
+    }
 }

@@ -11,15 +11,15 @@
 /* ************************************************************************** */
 
 #include "ft_base_printf.h"
-#include "ft_constants.h"
+#include "ft_defines.h"
 #include "ft_routine_printf.h"
 #include "libft.h"
+#include <stdarg.h>
 #include <stdlib.h>
 #include <wchar.h>
 
-static const char *get_parameter_value(
-    t_data  *data,
-    t_param *parameter)
+static const char *get_parameter_value(t_data  *data,
+                                       t_param *parameter)
 {
     if (parameter->status == PRINTF_PARAMETER_NOT_RECOVERED)
     {

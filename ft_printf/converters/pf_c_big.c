@@ -11,8 +11,10 @@
 /* ************************************************************************** */
 
 #include "ft_base_printf.h"
-#include "ft_constants.h"
+#include "ft_defines.h"
 #include "ft_routine_printf.h"
+#include <stdarg.h>
+#include <stddef.h>
 #include <stdlib.h>
 #include <wchar.h>
 

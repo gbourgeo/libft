@@ -11,11 +11,11 @@
 /* ************************************************************************** */
 
 #include "ft_base_printf.h"
-#include "ft_constants.h"
+#include "ft_defines.h"
 #include "ft_routine_printf.h"
 #include "libft.h"
+#include <stdarg.h>
 #include <stddef.h>
-#include <stdint.h>
 
 static int printf_flag_hash(t_data _unused *data, t_conv *conv)
 {
@@ -59,7 +59,7 @@ static int printf_flag_star(t_data *data, t_conv *conv)
         conv->flags.min_width = (long) param->value;
         if (conv->flags.min_width < 0)
         {
-            REMOVE_BIT(conv->flags.bits, (uint32_t) PRINTF_FLAG_ZERO);
+            REMOVE_BIT(conv->flags.bits, PRINTF_FLAG_ZERO);
             ASSIGN_BIT(conv->flags.bits, PRINTF_FLAG_MINUS);
             conv->flags.min_width = -conv->flags.min_width;
         }
@@ -70,8 +70,8 @@ static int printf_flag_star(t_data *data, t_conv *conv)
         conv->flags.precision = (long) param->value;
         if (conv->flags.precision < 0)
         {
-            REMOVE_BIT(conv->flags.bits, (uint32_t) PRINTF_FLAG_DOT);
-            REMOVE_BIT(conv->flags.bits, (uint32_t) PRINTF_FLAG_STAR);
+            REMOVE_BIT(conv->flags.bits, PRINTF_FLAG_DOT);
+            REMOVE_BIT(conv->flags.bits, PRINTF_FLAG_STAR);
             conv->flags.precision = 0;
         }
     }
@@ -95,7 +95,7 @@ static int printf_flag_is_digit(t_data *data, t_conv *conv)
         conv->flags.precision = ft_atol(data->head);
         if (conv->flags.precision < 0)
         {
-            REMOVE_BIT(conv->flags.bits, (uint32_t) PRINTF_FLAG_DOT);
+            REMOVE_BIT(conv->flags.bits, PRINTF_FLAG_DOT);
             conv->flags.precision = 0;
         }
     }

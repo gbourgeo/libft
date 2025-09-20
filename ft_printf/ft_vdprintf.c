@@ -12,6 +12,7 @@
 
 #include "ft_vdprintf.h"
 #include "ft_base_printf.h"
+#include <stdarg.h>
 
 int ft_vdprintf(int filed, const char *format, va_list argp)
 {

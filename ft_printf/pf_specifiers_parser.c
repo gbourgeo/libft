@@ -11,8 +11,9 @@
 /* ************************************************************************** */
 
 #include "ft_base_printf.h"
-#include "ft_constants.h"
+#include "ft_defines.h"
 #include "ft_routine_printf.h"
+#include <stddef.h>
 
 int pf_parse_specifiers(t_data *data, t_conv *conv)
 {

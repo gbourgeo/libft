@@ -11,9 +11,10 @@
 /* ************************************************************************** */
 
 #include "ft_base_printf.h"
-#include "ft_constants.h"
+#include "ft_defines.h"
 #include "ft_routine_printf.h"
 #include "libft.h"
+#include <stdarg.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -147,7 +148,7 @@ ssize_t pf_di(t_data *data, t_param *parameter, t_conv *conversion)
     prefix = get_prefix_value(parameter, conversion);
     len    = (ssize_t) ft_strlen(src);
     // Minimum width
-    compute_zeros_and_spaces(parameter, conversion, len, (prefix != NULL), &zeros, &spaces);
+    compute_zeros_and_spaces(parameter, conversion, len, prefix != NULL, &zeros, &spaces);
     // Value allocation
     conversion->len   = len + zeros + spaces + (prefix != NULL) + 1;
     conversion->value = (char *) malloc(conversion->len);

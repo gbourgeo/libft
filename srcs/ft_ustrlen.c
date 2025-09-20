@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   ft_ustrlen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gbourgeo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2013/12/12 05:28:41 by gbourgeo          #+#    #+#             */
-/*   Updated: 2013/12/19 17:35:13 by gbourgeo         ###   ########.fr       */
+/*   Created: 2013/11/19 16:22:13 by gbourgeo          #+#    #+#             */
+/*   Updated: 2013/12/17 06:02:11 by pc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <stddef.h>
-#include <stdlib.h>
 
-t_list		*ft_lstmap(t_list *lst, t_list *(*func)(t_list *))
+size_t ft_ustrlen(const unsigned char *str)
 {
-	t_list	*so_fresh = NULL;
+    size_t len = 0;
 
-	so_fresh = func(lst);
-	if (lst->next != NULL)
-	{
-		so_fresh->next = ft_lstmap(lst->next, func);
-	}
-	return (so_fresh);
+    if (str != NULL)
+    {
+        while (str[len] != '\0')
+        {
+            len++;
+        }
+    }
+    return (len);
 }

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "ft_base_printf.h"
-#include <stddef.h>
 
 int pf_routine(t_data *data)
 {

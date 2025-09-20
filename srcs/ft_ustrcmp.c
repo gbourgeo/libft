@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   ft_ustrcmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2013/12/12 05:28:41 by gbourgeo          #+#    #+#             */
-/*   Updated: 2013/12/19 17:35:13 by gbourgeo         ###   ########.fr       */
+/*   Created: 2013/11/22 18:39:09 by gbourgeo          #+#    #+#             */
+/*   Updated: 2015/01/29 13:23:16 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <stddef.h>
-#include <stdlib.h>
 
-t_list		*ft_lstmap(t_list *lst, t_list *(*func)(t_list *))
+int ft_ustrcmp(const unsigned char *str1, const unsigned char *str2)
 {
-	t_list	*so_fresh = NULL;
+    size_t iter = 0;
 
-	so_fresh = func(lst);
-	if (lst->next != NULL)
-	{
-		so_fresh->next = ft_lstmap(lst->next, func);
-	}
-	return (so_fresh);
+    if (str1 != NULL && str2 != NULL)
+    {
+        while (str1[iter] != '\0'
+               && str2[iter] != '\0'
+               && str1[iter] == str2[iter])
+        {
+            ++iter;
+        }
+        return (str1[iter] - str2[iter]);
+    }
+    return (-1);
 }
