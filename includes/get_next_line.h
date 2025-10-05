@@ -15,7 +15,10 @@
 
 # include "ft_defines.h"
 
-# define GNL_BUFF_SIZE 8
+enum
+{
+    GNL_BUFF_SIZE = 8
+};
 
 typedef struct _align(32) s_gnl
 {

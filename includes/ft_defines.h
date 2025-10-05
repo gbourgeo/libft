@@ -41,8 +41,8 @@
 # define REMOVE_BIT(storage, bit) ((storage) &= ~(unsigned int) (bit))
 #endif
 
-#ifndef CLEAR_BIT
-# define CLEAR_BIT(storage) ((storage) &= ~(unsigned int) (0xff))
+#ifndef CLEAR_8BIT
+# define CLEAR_8BIT(storage) ((storage) &= ~(unsigned char) (0xff))
 #endif
 
 #ifndef UINT32

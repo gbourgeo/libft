@@ -99,7 +99,7 @@ all: start $(NAME) end
 .PHONY: start
 start:
 	@mkdir -p $(OBJ_DIR)
-	@/bin/echo "[$(NAME)] Flags: $(CFLAGS)"
+	@/bin/echo "[$(NAME)] Compilation flags: $(CFLAGS)"
 	@/bin/echo -n "[$(NAME)] Compiling "
 
 .PHONY: $(NAME)
@@ -124,6 +124,7 @@ $(OBJ_DIR)%.o: $(PRINTF_DIR)$(PRINTF_CONVERTERS_DIR)%.c
 
 .PHONY: end
 end:
+	@sleep 0.3
 	@echo ""
 
 .PHONY: clean

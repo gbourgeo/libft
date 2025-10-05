@@ -15,7 +15,7 @@
 
 # include "ft_base_printf.h"
 
-int  ft_vprintf(const char *format, va_list ap);
+int  ft_vprintf(const char *format, va_list argp);
 void ft_vprintf_write(t_data *data);
 
 #endif

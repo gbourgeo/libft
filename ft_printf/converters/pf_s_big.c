@@ -67,6 +67,10 @@ ssize_t pf_s_big(t_data *data, t_param *parameter, t_conv *conversion)
         0;
     // Value allocation
     conversion->len   = len + min_width;
+    if (conversion->len == 0)
+    {
+        return (0);
+    }
     conversion->value = (char *) malloc(conversion->len);
     if (conversion->value == NULL)
     {
